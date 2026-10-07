@@ -1,0 +1,78 @@
+/* Grayscale print edition: same layout, impacts encoded by pattern instead of colour.
+   solid = Reduced · hatched / dashed = Confirm · light grey = No impact · outlined = Improved */
+:root {
+  --navy: #111111;
+  --ink: #111111; --ink-2: #333333; --muted: #555555; --muted-2: #666666;
+  --line: #d6d6d6; --line-2: #d9d9d9; --line-3: #bdbdbd; --surface: #f2f2f2;
+  --accent: #111111; --cover-accent: #e6e6e6;
+  --red: #111111; --red-tint: #f2f2f2; --red-soft: #eeeeee; --red-line: #111111;
+  --green: #111111; --green-tint: #ffffff; --green-soft: #ffffff; --green-line: #111111;
+  --yellow: #d9d9d9; --yellow-ink: #333333; --yellow-dark: #111111; --yellow-line: #bdbdbd;
+  --grey: #ffffff; --grey-ink: #111111; --grey-line: #111111;
+  --orange: #555555; --orange-soft: #f4f4f4; --orange-line: #8a8a8a;
+  --t-continuity: #111; --t-scope: #111; --t-limits: #111; --t-contracts: #111; --t-market: #111;
+  --hatch: repeating-linear-gradient(135deg, #111 0 0.9pt, #fff 0.9pt 2.3pt);
+}
+
+.cover { background: #1a1a1a; background-image: radial-gradient(circle at 93% 6%, rgba(255, 255, 255, 0.08) 0, rgba(255, 255, 255, 0) 27%); }
+.brand-mark path:first-child { fill: #fff; } .brand-mark path:nth-child(2) { fill: #1a1a1a; } .brand-mark circle { fill: #8a8a8a; }
+.sec-h .num.alt { background: #555; }
+
+/* bars and swatches */
+.seg-reduced { background: #111; }
+.seg-confirm { background: #fff; background-image: var(--hatch); }
+.seg-no_impact { background: #d6d6d6; }
+.seg-improved { background: #fff; box-shadow: inset 0 0 0 0.8pt #111; }
+.bar { background: #fff; }
+.counts .sw, .gk-sw { display: inline-block; width: 5.6pt; height: 5.6pt; border-radius: 1pt; margin-right: 2.4pt; vertical-align: -0.4pt; }
+.counts .c { color: #111; }
+
+/* badges */
+.badge .sev { color: #111; }
+.i-reduced .imp { background: #111; color: #fff; }
+.i-reduced .sev { border-color: #111; }
+.i-improved .imp { background: #fff; color: #111; box-shadow: inset 0 0 0 0.8pt #111; border-radius: 2.4pt 0 0 2.4pt; }
+.i-improved .sev { border-color: #111; }
+.i-no_impact .imp { background: #d9d9d9; color: #111; }
+.i-no_impact .sev { border-color: #bdbdbd; }
+.badge.i-confirm { border: 0.8pt dashed #111; }
+.i-confirm .imp { background: #fff; color: #111; }
+.i-confirm .sev { border: 0; border-left: 0.8pt dashed #111; border-radius: 0; }
+.badge.solo.i-confirm .imp { border-radius: 2pt; }
+.q-ic { display: inline-flex; align-items: center; justify-content: center; width: 6.2pt; height: 6.2pt; border-radius: 50%; background: #111; color: #fff; font-size: 5pt; font-weight: 700; }
+
+/* executive summary */
+.hero { border: 0.9pt solid #111; }
+.hero.lvl-high, .hero.lvl-medium, .hero.lvl-low { --hero-bg: #111; --hero-soft: #eeeeee; --hero-line: #111; }
+.kpi.accent { border: 1.1pt solid #111; box-shadow: none; }
+.kpi.accent .val { color: #111; }
+.lvl-high, .lvl-medium, .lvl-low { color: #111; --m-on: #111; --m-off: #cccccc; }
+
+/* critical changes */
+.crit .rank { background: #111; }
+.crit .rank.outline { background: #fff; color: #111; border-color: #111; }
+.crit .er .arrow { color: #111; }
+.crit .er .to { color: #111; text-decoration: underline; text-underline-offset: 1.5pt; text-decoration-thickness: 0.8pt; }
+.improve .card { background: #fff; border-color: #111; }
+
+/* section cards */
+.sum li::before { background: #111; }
+.risk.lvl-high, .risk.lvl-medium, .risk.lvl-low { --rk: #111; --rk-line: #111; border-width: 0.9pt; box-shadow: inset 2.8pt 0 0 #111; }
+.pill.lvl-high { background: #e6e6e6; border-color: #111; color: #111; }
+.pill.lvl-medium { background: #f4f4f4; border-color: #8a8a8a; color: #333; }
+.pill.lvl-low { background: #fff; border-color: #bdbdbd; color: #555; }
+
+/* row edges: solid / dashed / light grey / outlined */
+.cmp tbody.item tr.main td:first-child, .cmp tbody.item tr.why td:first-child { box-shadow: none; background-repeat: no-repeat; background-size: 2.4pt 100%; }
+.cmp tbody.item.i-reduced tr td:first-child { background-image: linear-gradient(#111, #111); }
+.cmp tbody.item.i-confirm tr td:first-child { background-image: repeating-linear-gradient(180deg, #111 0 2.2pt, transparent 2.2pt 4pt); }
+.cmp tbody.item.i-no_impact tr td:first-child { background-image: linear-gradient(#bdbdbd, #bdbdbd); }
+.cmp tbody.item.i-improved tr td:first-child { background-image: linear-gradient(90deg, #111 0 0.7pt, #fff 0.7pt 1.7pt, #111 1.7pt 2.4pt); }
+.cmp tbody.item tr.why td { color: #333; }
+.cmp .tag { color: #111; background: #e6e6e6; }
+
+.quote .side.renewal { background: #e6e6e6; color: #111; }
+.quote .side.expiring { background: #f4f4f4; color: #333; }
+.th-continuity, .th-scope, .th-limits, .th-contracts, .th-market { color: #111; }
+.counts .q-ic { background: none; color: #111; width: auto; height: auto; font-size: inherit; border-radius: 0; }
+.kpi.accent { box-shadow: inset 2.2pt 0 0 #111; }

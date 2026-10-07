@@ -1,0 +1,68 @@
+{# ---------- primitive macros shared by every section ---------- #}
+{% set IMPACT_LABEL = {"reduced": "Reduced", "improved": "Improved", "no_impact": "No impact", "confirm": "Confirm"} %}
+{% set SEV_LABEL = {"critical": "Critical", "high": "High", "medium": "Medium", "low": "Low"} %}
+{% set SEV_BARS = {"critical": 4, "high": 3, "medium": 2, "low": 1} %}
+{% set LVL_LABEL = {"high": "High", "medium": "Medium", "low": "Low"} %}
+{% set LVL_PILLS = {"high": 3, "medium": 2, "low": 1} %}
+{% set THEME_LABEL = {"continuity": "Continuity of cover", "scope": "Coverage scope", "limits": "Limits", "contracts": "Contract compliance", "market": "Market / regulatory"} %}
+{% set THEME_TAG = {"continuity": "Continuity", "scope": "Scope", "limits": "Limits", "contracts": "Contracts", "market": "Market"} %}
+
+{% macro icon(impact, size=5.2) -%}
+{%- if impact == "reduced" -%}
+<svg class="ic" width="{{ size }}pt" height="{{ size * 0.86 }}pt" viewBox="0 0 10 8.6"><path d="M0 0h10L5 8.6z" fill="currentColor"/></svg>
+{%- elif impact == "improved" -%}
+<svg class="ic" width="{{ size }}pt" height="{{ size * 0.86 }}pt" viewBox="0 0 10 8.6"><path d="M0 8.6h10L5 0z" fill="currentColor"/></svg>
+{%- elif impact == "no_impact" -%}
+<svg class="ic" width="{{ size }}pt" height="{{ size * 0.8 }}pt" viewBox="0 0 10 8"><rect y="1" width="10" height="1.9" fill="currentColor"/><rect y="5.1" width="10" height="1.9" fill="currentColor"/></svg>
+{%- else -%}
+<span class="ic q-ic">?</span>
+{%- endif -%}
+{%- endmacro %}
+
+{% macro sevbars(sev, h=6.6) -%}
+{%- set n = SEV_BARS[sev] -%}
+<svg class="sevbars" width="{{ h * 1.3 }}pt" height="{{ h }}pt" viewBox="0 0 13 10">
+{%- for i in range(4) %}{% set bh = 3.4 + i * 2.2 %}<rect x="{{ i * 3.4 }}" y="{{ 10 - bh }}" width="2.2" height="{{ bh }}" rx="0.4" class="{{ '' if i < n else 'off' }}"/>{% endfor -%}
+</svg>
+{%- endmacro %}
+
+{% macro badge(b) -%}
+{%- if b -%}
+<span class="badge i-{{ b.impact }}"><span class="imp">{{ icon(b.impact) }}{{ IMPACT_LABEL[b.impact] }}</span><span class="sev">{{ sevbars(b.severity) }}{{ SEV_LABEL[b.severity] }}</span></span>
+{%- endif -%}
+{%- endmacro %}
+
+{% macro impact_chip(impact) -%}
+<span class="badge solo i-{{ impact }}"><span class="imp">{{ icon(impact) }}{{ IMPACT_LABEL[impact] }}</span></span>
+{%- endmacro %}
+
+{% macro meter(level) -%}
+<span class="meter">{% for i in range(3) %}<i class="{{ 'on' if i < LVL_PILLS[level] else '' }}"></i>{% endfor %}</span>
+{%- endmacro %}
+
+{% macro bar(mix, cls="") -%}
+{%- set total = mix.reduced + mix.confirm + mix.no_impact + mix.improved -%}
+<div class="bar {{ cls }}">
+{%- if total -%}
+{%- for k in ["reduced", "confirm", "no_impact", "improved"] %}{% if mix[k] %}<div class="seg seg-{{ k }}" style="flex: {{ mix[k] }} 1 0"></div>{% endif %}{% endfor -%}
+{%- endif -%}
+</div>
+{%- endmacro %}
+
+{% macro counts(mix) -%}
+<span class="counts">
+{%- for k in ["reduced", "confirm", "no_impact", "improved"] %}{% if mix[k] %}<span class="c c-{{ k }}"><i class="sw seg-{{ k }}"></i>{{ icon(k, 4.6) }}{{ mix[k] }}</span>{% endif %}{% endfor -%}
+</span>
+{%- endmacro %}
+
+{% macro sec_head(number, title, alt=False) -%}
+<div class="sec-h"><div class="num{{ ' alt' if alt else '' }}">{{ number }}</div><h2>{{ title }}</h2></div>
+{%- endmacro %}
+
+{% macro shield() -%}
+<svg width="8pt" height="9pt" viewBox="0 0 16 18"><path d="M8 1.2 2 3.6v5.1c0 3.9 2.6 6.8 6 8 3.4-1.2 6-4.1 6-8V3.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 5.6v4.3M8 12.2v.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+{%- endmacro %}
+
+{% macro brand_mark() -%}
+<svg class="brand-mark" viewBox="0 0 25 27"><path d="M12.5 0 25 4.6v9.3C25 21 19.6 25.3 12.5 27 5.4 25.3 0 21 0 13.9V4.6z" fill="#fff"/><path d="M8.6 7.4h8.6v2.9h-5.4v2.5h4.6v2.8h-4.6v5H8.6z" fill="#14284b"/><circle cx="17.6" cy="18.8" r="1.8" fill="#ea5b0c"/></svg>
+{%- endmacro %}

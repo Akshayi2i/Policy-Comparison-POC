@@ -1,0 +1,38 @@
+# Contract requirement checklist (Section 9). Each slot is satisfied by a form on the policy.
+# A form matches a slot when its number matches one of `forms` (ISO hints) or its title contains all words
+# of one `title_any` entry. Carrier-specific forms that match none of these are mapped by the model.
+slots:
+  - id: ai_ongoing
+    label: "Additional insured - ongoing operations"
+    forms: ["CG 20 10", "CG 20 26", "CG 20 33", "CG 20 38"]
+    title_any: [["additional insured"], ["blanket", "additional insured"]]
+    exclude_title: ["completed operations"]
+  - id: ai_completed
+    label: "Additional insured - completed operations"
+    forms: ["CG 20 37", "CG 20 39", "CG 20 40"]
+    title_any: [["additional insured", "completed operations"]]
+  - id: primary_noncontributory
+    label: "Primary & noncontributory"
+    forms: ["CG 20 01"]
+    title_any: [["primary", "noncontributory"], ["primary", "non-contributory"]]
+  - id: waiver_subrogation
+    label: "Waiver of subrogation"
+    forms: ["CG 24 04"]
+    title_any: [["waiver", "subrogation"], ["waiver of transfer of rights"]]
+  - id: per_project_aggregate
+    label: "Per project / per location aggregate"
+    forms: ["CG 25 03", "CG 25 04"]
+    title_any: [["designated construction project"], ["per project"], ["per location", "aggregate"], ["designated location", "aggregate"]]
+
+broker_checks:
+  - id: claims_made_continuity
+    label: "Claims-made continuity (retroactive date)"
+  - id: midterm_carried
+    label: "Mid-term changes carried into renewal"
+  - id: carrier_change
+    label: "Carrier change"
+  - id: wording_notes
+    label: "Endorsement wording that needs a read"
+  - id: excess_tower
+    label: "Excess and umbrella tower"
+    out_of_scope: true

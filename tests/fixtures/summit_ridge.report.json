@@ -1,0 +1,1575 @@
+{
+ "meta": {
+  "title": "Summit Ridge Builders Inc — Policy Renewal Comparison",
+  "brand": "Fideon OS",
+  "agency": "Fideon Demo Agency",
+  "header_right": "Summit Ridge Builders Inc · Renewal Comparison",
+  "footer_left": "Confidential · for discussion; the policies as issued govern coverage",
+  "disclaimer": "This comparison summarises differences between the expiring policy (as amended by its endorsements and policy changes) and the renewal document, for discussion purposes. It does not replace the policy wording: coverage is determined solely by the policies as issued."
+ },
+ "cover": {
+  "agency": "Fideon Demo Agency",
+  "insured": "Summit Ridge Builders Inc",
+  "subtitle": "Commercial Property / General Liability · Claims-Made",
+  "expiring": {
+   "carrier": "Keystone Casualty Company",
+   "policy_number": "KCC-GL-25-77310",
+   "period": "03/01/2025 – 03/01/2026"
+  },
+  "renewal": {
+   "carrier": "Granite Specialty Insurance Company",
+   "policy_number": "GSI-CGL-2611-0042",
+   "period": "03/01/2026 – 03/01/2027"
+  },
+  "prepared_line": "Prepared October 06, 2026 by Account Manager (demo)"
+ },
+ "executive": {
+  "risk": "high",
+  "confidence": "medium",
+  "verdict": "**Do not present this renewal as like-for-like.** Premium is $3,500 lower, but the renewal moves to a surplus lines carrier, drops Commercial Property, advances the retro date to inception and removes three contract-required endorsements. **10 critical changes** need action before the 03/01/2026 expiry.",
+  "confidence_note": "Confidence is Medium because Commercial Property may be quoted separately and one renewal page was scanned.",
+  "kpis": [
+   {
+    "label": "PREMIUM",
+    "value": "−$3,500",
+    "sub": "−11.1% · $31,400 → $27,900",
+    "accent": false
+   },
+   {
+    "label": "CRITICAL CHANGES",
+    "value": "10",
+    "sub": "act before 03/01/2026",
+    "accent": true
+   },
+   {
+    "label": "FORMS",
+    "value": "+1 / −5",
+    "sub": "added / removed",
+    "accent": false
+   },
+   {
+    "label": "TO CONFIRM",
+    "value": "2",
+    "sub": "items with the carrier",
+    "accent": false
+   }
+  ],
+  "changes_total": 41,
+  "mix": {
+   "reduced": 18,
+   "confirm": 17,
+   "no_impact": 4,
+   "improved": 2
+  }
+ },
+ "critical": {
+  "intro": "The ten changes that most affect this client, ranked by severity and grouped by theme. Each has a next step to complete before the expiring policy ends.",
+  "deadline": "03/01/2026",
+  "themes": [
+   {
+    "theme": "continuity",
+    "count": 2
+   },
+   {
+    "theme": "scope",
+    "count": 2
+   },
+   {
+    "theme": "limits",
+    "count": 2
+   },
+   {
+    "theme": "contracts",
+    "count": 3
+   },
+   {
+    "theme": "market",
+    "count": 1
+   }
+  ],
+  "items": [
+   {
+    "rank": 1,
+    "title": "Policy period gap",
+    "theme": "continuity",
+    "description": "No coverage between the expiring and renewal policy.",
+    "expiring": "Expires 03/01/2026 [[E1 p.1]]",
+    "renewal": "Incepts 03/01/2026 (+11 h 59 min) [[R1 p.1]]",
+    "badge": {
+     "impact": "reduced",
+     "severity": "critical"
+    },
+    "next_step": "Ask carrier to align inception time to 12:01 AM."
+   },
+   {
+    "rank": 2,
+    "title": "Retroactive date advanced",
+    "theme": "continuity",
+    "description": "Seven years of prior acts lose coverage on a claims-made form.",
+    "expiring": "Retro 01/01/2019 [[E1 p.1]]",
+    "renewal": "Retro 03/01/2026 [[R1 p.1]]",
+    "badge": {
+     "impact": "reduced",
+     "severity": "critical"
+    },
+    "next_step": "Negotiate 01/01/2019 retro or quote an ERP tail."
+   },
+   {
+    "rank": 3,
+    "title": "Commercial Property dropped",
+    "theme": "scope",
+    "description": "Building ($1.8M) and BPP ($400K) have no cover on the renewal.",
+    "expiring": "Property + GL [[E1 p.2]]",
+    "renewal": "GL only [[R1 p.2]]",
+    "badge": {
+     "impact": "reduced",
+     "severity": "critical"
+    },
+    "next_step": "Confirm separate property quote before 03/01/2026."
+   },
+   {
+    "rank": 4,
+    "title": "Each Occurrence limit halved",
+    "theme": "limits",
+    "description": "Mid-term increase was not carried forward.",
+    "expiring": "$2,000,000 [[E1 p.6]]",
+    "renewal": "$1,000,000 [[R1 p.1]]",
+    "badge": {
+     "impact": "reduced",
+     "severity": "critical"
+    },
+    "next_step": "Ask underwriter to reinstate $2M endorsement."
+   },
+   {
+    "rank": 5,
+    "title": "Products-completed ops excluded",
+    "theme": "limits",
+    "description": "Core contractor exposure is no longer insured.",
+    "expiring": "Included [[E1 p.1]]",
+    "renewal": "Excluded [[R1 p.1]]",
+    "badge": {
+     "impact": "reduced",
+     "severity": "critical"
+    },
+    "next_step": "Request reinstatement; flag to client in writing."
+   },
+   {
+    "rank": 6,
+    "title": "AI – completed operations lost",
+    "theme": "contracts",
+    "description": "Contract breach risk; existing COIs overstate coverage.",
+    "expiring": "CG 20 37 [[E1 p.2]]",
+    "renewal": "Not found",
+    "badge": {
+     "impact": "reduced",
+     "severity": "critical"
+    },
+    "next_step": "Request CG 20 37; hold COI reissue."
+   },
+   {
+    "rank": 7,
+    "title": "Primary & noncontributory lost",
+    "theme": "contracts",
+    "description": "Contract breach risk; existing COIs overstate coverage.",
+    "expiring": "CG 20 01 [[E1 p.2]]",
+    "renewal": "Not found",
+    "badge": {
+     "impact": "reduced",
+     "severity": "critical"
+    },
+    "next_step": "Request CG 20 01 on renewal."
+   },
+   {
+    "rank": 8,
+    "title": "Per-project aggregate lost",
+    "theme": "contracts",
+    "description": "One aggregate now shared across all job sites.",
+    "expiring": "CG 25 03 [[E1 p.2]]",
+    "renewal": "Not found",
+    "badge": {
+     "impact": "reduced",
+     "severity": "critical"
+    },
+    "next_step": "Request CG 25 03 on renewal."
+   },
+   {
+    "rank": 9,
+    "title": "Now non-admitted (surplus lines)",
+    "theme": "market",
+    "description": "No state guaranty fund; SL tax and filing duties apply.",
+    "expiring": "Admitted",
+    "renewal": "Surplus lines [[R1 p.1]]",
+    "badge": {
+     "impact": "reduced",
+     "severity": "high"
+    },
+    "next_step": "Disclose to client; complete diligent-effort file."
+   },
+   {
+    "rank": 10,
+    "title": "Terrorism (TRIA) rejected",
+    "theme": "scope",
+    "description": "Terrorism losses are uninsured.",
+    "expiring": "$310 accepted [[E1 p.1]]",
+    "renewal": "Rejected [[R1 p.1]]",
+    "badge": {
+     "impact": "reduced",
+     "severity": "high"
+    },
+    "next_step": "Obtain signed rejection or re-elect cover."
+   }
+  ],
+  "improvements": [
+   {
+    "badge": {
+     "impact": "improved",
+     "severity": "medium"
+    },
+    "text": "**General Aggregate** $2M → $3M [[R1 p.1]]"
+   },
+   {
+    "badge": {
+     "impact": "improved",
+     "severity": "low"
+    },
+    "text": "**Medical Expense** $5,000 → $10,000 [[R1 p.1]]"
+   }
+  ],
+  "empty_note": null
+ },
+ "overview": [
+  {
+   "number": "3",
+   "title": "Policy Information",
+   "takeaway": "New carrier, new market status and a dropped coverage part - this is a re-marketed placement, not a like-for-like renewal.",
+   "mix": {
+    "reduced": 3,
+    "confirm": 1,
+    "no_impact": 3,
+    "improved": 0
+   },
+   "risk": "high"
+  },
+  {
+   "number": "4",
+   "title": "Premium and Financial Terms",
+   "takeaway": "Premium falls 11% ($3,500), but a new $5,000 liability SIR shifts part of that saving back to the client.",
+   "mix": {
+    "reduced": 1,
+    "confirm": 1,
+    "no_impact": 1,
+    "improved": 0
+   },
+   "risk": "medium"
+  },
+  {
+   "number": "5",
+   "title": "Limits and Sub-limits",
+   "takeaway": "Per-occurrence limit is halved and products-completed operations is excluded; the aggregate increase does not compensate.",
+   "mix": {
+    "reduced": 3,
+    "confirm": 2,
+    "no_impact": 0,
+    "improved": 2
+   },
+   "risk": "high"
+  },
+  {
+   "number": "6",
+   "title": "Coverage Terms and Conditions",
+   "takeaway": "Retro date advanced to inception removes prior-acts cover; terrorism is rejected and notice of cancellation is cut to 10 days.",
+   "mix": {
+    "reduced": 3,
+    "confirm": 3,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "high"
+  },
+  {
+   "number": "7",
+   "title": "Endorsements and Forms",
+   "takeaway": "Five forms removed and one restrictive exclusion added; three removals breach typical construction contract requirements.",
+   "mix": {
+    "reduced": 4,
+    "confirm": 5,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "high"
+  },
+  {
+   "number": "8",
+   "title": "Mid-term Changes on the Expiring Policy",
+   "takeaway": "The September 2025 limit increase was applied to the expiring policy but not carried into the renewal.",
+   "mix": {
+    "reduced": 1,
+    "confirm": 1,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "high"
+  },
+  {
+   "number": "9",
+   "title": "Contract Requirements and Broker Checklist",
+   "takeaway": "Three contract requirements met on the expiring policy are not met on the renewal; ongoing-ops AI and waiver of subrogation carry over.",
+   "mix": {
+    "reduced": 5,
+    "confirm": 2,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "high"
+  },
+  {
+   "number": "10",
+   "title": "Client Focus Areas",
+   "takeaway": "Silica exclusion broadened; additional insured changes; terrorism rejected.",
+   "mix": {
+    "reduced": 2,
+    "confirm": 1,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "medium"
+  },
+  {
+   "number": "11",
+   "title": "Items Pending Confirmation with the Carrier",
+   "takeaway": "Two property forms removed without explanation.",
+   "mix": {
+    "reduced": 0,
+    "confirm": 2,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "medium"
+  }
+ ],
+ "sections": [
+  {
+   "number": "3",
+   "title": "Policy Information",
+   "page_break_before": true,
+   "summary": {
+    "headline": "New carrier, new market status and a dropped coverage part - this is a re-marketed placement, not a like-for-like renewal.",
+    "bullets": [
+     "11 h 59 min gap between expiry and inception.",
+     "Commercial Property is not part of the renewal.",
+     "Renewal is non-admitted (surplus lines)."
+    ],
+    "mix": {
+     "reduced": 3,
+     "confirm": 1,
+     "no_impact": 3,
+     "improved": 0
+    },
+    "items_compared": 7
+   },
+   "risk": {
+    "level": "high",
+    "statement": "Three structural changes alter who insures the client, what is insured and when cover starts.",
+    "confidence": "high",
+    "confidence_reason": "All values read from digital declarations and schedules (E1 p.1–2, R1 p.1–2)."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": null,
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Element",
+      "Expiring",
+      "Renewal",
+      "Change / Assessment"
+     ],
+     "rows": [
+      {
+       "label": "Named Insured",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Summit Ridge Builders, Inc. [[E1 p.1]]",
+       "renewal": "Summit Ridge Builders Inc [[R1 p.1]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Policy period continuity",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Expires 03/01/2026 [[E1 p.1]]",
+       "renewal": "Incepts 03/01/2026 [[R1 p.1]]",
+       "change": "Gap of 11 h 59 min",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "The renewal starts 11 h 59 min after the expiring policy ends, so there is no coverage in between."
+      },
+      {
+       "label": "Coverage parts (lines of business)",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Commercial Property, General Liability [[E1 p.2]]",
+       "renewal": "General Liability [[R1 p.2]]",
+       "change": "Dropped: Commercial Property",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Commercial Property appears on the expiring policy but not in the renewal documents. Either the coverage part is not being renewed (the client needs replacement cover or written notice) or it is quoted separately - confirm before the expiration date."
+      },
+      {
+       "label": "Admitted / surplus lines status",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "No surplus lines wording found",
+       "renewal": "Non-admitted (surplus lines) [[R1 p.1]]",
+       "change": "Now non-admitted",
+       "badge": {
+        "impact": "reduced",
+        "severity": "high"
+       },
+       "explain_label": "Why it matters",
+       "explain": "A non-admitted (surplus lines) policy is not backed by the state guaranty fund, carries surplus lines tax and filing duties, and may need diligent-effort documentation."
+      },
+      {
+       "label": "Insurer",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Keystone Casualty Company [[E1 p.1]]",
+       "renewal": "Granite Specialty Insurance Company [[R1 p.1]]",
+       "change": "Keystone Casualty → Granite Specialty",
+       "badge": {
+        "impact": "confirm",
+        "severity": "medium"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Insurer changed. Confirm AM Best rating, reissue certificates of insurance and compare full policy forms - carrier-specific forms often differ from ISO wording."
+      },
+      {
+       "label": "Policy Number",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "KCC-GL-25-77310 [[E1 p.1]]",
+       "renewal": "GSI-CGL-2611-0042 [[R1 p.1]]",
+       "change": "New policy number",
+       "badge": {
+        "impact": "no_impact",
+        "severity": "low"
+       },
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Effective Date",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "03/01/2025 [[E1 p.1]]",
+       "renewal": "03/01/2026 [[R1 p.1]]",
+       "change": "03/01/2025 → 03/01/2026",
+       "badge": {
+        "impact": "no_impact",
+        "severity": "low"
+       },
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Expiration Date",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "03/01/2026 [[E1 p.1]]",
+       "renewal": "03/01/2027 [[R1 p.1]]",
+       "change": "03/01/2026 → 03/01/2027",
+       "badge": {
+        "impact": "no_impact",
+        "severity": "low"
+       },
+       "explain_label": "Why it matters",
+       "explain": null
+      }
+     ],
+     "footnote": null
+    }
+   ]
+  },
+  {
+   "number": "4",
+   "title": "Premium and Financial Terms",
+   "page_break_before": false,
+   "summary": {
+    "headline": "Premium falls 11% ($3,500), but a new $5,000 liability SIR shifts part of that saving back to the client.",
+    "bullets": [
+     "Expiring was +$2,150 higher after mid-term changes.",
+     "Property deductible not restated on the renewal.",
+     "Wind / Hail deductible not shown on either declarations page."
+    ],
+    "mix": {
+     "reduced": 1,
+     "confirm": 1,
+     "no_impact": 1,
+     "improved": 0
+    },
+    "items_compared": 3
+   },
+   "risk": {
+    "level": "medium",
+    "statement": "The saving is real but partly offset by retained risk and reduced cover elsewhere in the report.",
+    "confidence": "medium",
+    "confidence_reason": "Premium is clearly stated; deductibles may sit in forms rather than declarations, so absences are unconfirmed."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": "Premium",
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Element",
+      "Expiring",
+      "Renewal",
+      "Change / Assessment"
+     ],
+     "rows": [
+      {
+       "label": "Total Premium",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$31,400 [[E1 p.1]]",
+       "renewal": "$27,900 [[R1 p.1]]",
+       "change": "Decreased $3,500 (−11.1%)",
+       "badge": {
+        "impact": "no_impact",
+        "severity": "low"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Informational. Mid-term adjustments on the expiring policy added +$2,150 (Endorsement No. 2, eff. 09/15/2025, E1 p.6); the expiring figure is the annual declarations premium before those adjustments."
+      }
+     ],
+     "footnote": null
+    },
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": "Deductibles and retentions",
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Element",
+      "Expiring",
+      "Renewal",
+      "Change / Assessment"
+     ],
+     "rows": [
+      {
+       "label": "Liability Deductible / SIR",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "None [[E1 p.1]]",
+       "renewal": "$5,000 [[R1 p.1]]",
+       "change": "None → $5,000",
+       "badge": {
+        "impact": "reduced",
+        "severity": "high"
+       },
+       "explain_label": "Why it matters",
+       "explain": "The insured now retains the first $5,000 of every liability loss. Part of the premium saving is transferred back to the client as retained risk."
+      },
+      {
+       "label": "All Other Perils Deductible",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$2,500 [[E1 p.1]]",
+       "renewal": "—",
+       "change": "Not found in renewal",
+       "badge": {
+        "impact": "confirm",
+        "severity": "medium"
+       },
+       "explain_label": "Why it matters",
+       "explain": "All Other Perils Deductible was found in the prior documents ($2,500) but not in the renewal. Either it was removed or the renewal states it differently - check the renewal."
+      }
+     ],
+     "footnote": "Not shown on either declarations page (may be set by the policy forms): Wind / Hail Deductible."
+    }
+   ]
+  },
+  {
+   "number": "5",
+   "title": "Limits and Sub-limits",
+   "page_break_before": false,
+   "summary": {
+    "headline": "Per-occurrence limit is halved and products-completed operations is excluded; the aggregate increase does not compensate.",
+    "bullets": [
+     "Each Occurrence $2M → $1M (mid-term increase lost).",
+     "Fire legal liability removed.",
+     "Building / BPP limits absent with the property part."
+    ],
+    "mix": {
+     "reduced": 3,
+     "confirm": 2,
+     "no_impact": 0,
+     "improved": 2
+    },
+    "items_compared": 7
+   },
+   "risk": {
+    "level": "high",
+    "statement": "Two critical limit reductions hit the contractor's main liability exposure.",
+    "confidence": "medium",
+    "confidence_reason": "Liability limits are clear; property limits may be quoted separately. Business Income / Extra Expense not shown on either policy."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": null,
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Limit",
+      "Expiring",
+      "Renewal",
+      "Change / Assessment"
+     ],
+     "rows": [
+      {
+       "label": "Each Occurrence Limit",
+       "tag": "AMENDED MID-TERM",
+       "sublabel": null,
+       "expiring": "$2,000,000 [[E1 p.6]]",
+       "renewal": "$1,000,000 [[R1 p.1]]",
+       "change": "Decreased $1,000,000 (−50%)",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "The limit caps what the insurer pays per claim; halving it leaves materially more uninsured exposure. The expiring $2M was set by a mid-term endorsement that the renewal did not carry forward."
+      },
+      {
+       "label": "Products-Completed Operations Aggregate",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Included [[E1 p.1]]",
+       "renewal": "Excluded [[R1 p.1]]",
+       "change": "Included → Excluded",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "For a contractor, completed-operations claims are a core exposure. The coverage is no longer provided - a significant narrowing."
+      },
+      {
+       "label": "Damage to Premises Rented / Fire Legal Liability",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$100,000 [[E1 p.1]]",
+       "renewal": "None [[R1 p.1]]",
+       "change": "$100,000 → None",
+       "badge": {
+        "impact": "reduced",
+        "severity": "high"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Fire damage to rented premises is no longer covered."
+      },
+      {
+       "label": "General Aggregate Limit",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$2,000,000 [[E1 p.1]]",
+       "renewal": "$3,000,000 [[R1 p.1]]",
+       "change": "Increased $1,000,000 (+50%)",
+       "badge": {
+        "impact": "improved",
+        "severity": "medium"
+       },
+       "explain_label": "Why it matters",
+       "explain": "More total capacity across the policy year - partly offset by the lower per-occurrence limit."
+      },
+      {
+       "label": "Medical Expense (any one person)",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$5,000 [[E1 p.1]]",
+       "renewal": "$10,000 [[R1 p.1]]",
+       "change": "Increased $5,000 (+100%)",
+       "badge": {
+        "impact": "improved",
+        "severity": "low"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Higher no-fault medical payments to injured third parties."
+      },
+      {
+       "label": "Personal & Advertising Injury",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$1,000,000 [[E1 p.1]]",
+       "renewal": "$1,000,000 [[R1 p.1]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Building Limit",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$1,800,000 [[E1 p.1]]",
+       "renewal": "—",
+       "change": "Not found in renewal",
+       "badge": {
+        "impact": "confirm",
+        "severity": "high"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Building Limit was found in the prior documents ($1,800,000) but not in the renewal. Either it was removed or the renewal states it differently - check the renewal."
+      },
+      {
+       "label": "Business Personal Property",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$400,000 [[E1 p.1]]",
+       "renewal": "—",
+       "change": "Not found in renewal",
+       "badge": {
+        "impact": "confirm",
+        "severity": "high"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Business Personal Property was found in the prior documents ($400,000) but not in the renewal. Either it was removed or the renewal states it differently - check the renewal."
+      }
+     ],
+     "footnote": "Not shown on either declarations page: Business Income / Extra Expense."
+    }
+   ]
+  },
+  {
+   "number": "6",
+   "title": "Coverage Terms and Conditions",
+   "page_break_before": false,
+   "summary": {
+    "headline": "Retro date advanced to inception removes prior-acts cover; terrorism is rejected and notice of cancellation is cut to 10 days.",
+    "bullets": [
+     "Loss of seven years of prior acts.",
+     "TRIA rejection needs a signed client form.",
+     "Valuation, coinsurance and causes of loss not restated."
+    ],
+    "mix": {
+     "reduced": 3,
+     "confirm": 3,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 6
+   },
+   "risk": {
+    "level": "high",
+    "statement": "The retro change is one of the most consequential findings for a claims-made contractor policy.",
+    "confidence": "medium",
+    "confidence_reason": "R1 includes one scanned page; property terms could not be located and are pending confirmation."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": null,
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Term",
+      "Expiring",
+      "Renewal",
+      "Change / Assessment"
+     ],
+     "rows": [
+      {
+       "label": "Coverage Trigger",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Claims-Made [[E1 p.1]]",
+       "renewal": "Claims-Made [[R1 p.1]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Retroactive Date",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "01/01/2019 [[E1 p.1]]",
+       "renewal": "03/01/2026 [[R1 p.1]]",
+       "change": "Advanced 01/01/2019 → 03/01/2026",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Incidents before 03/01/2026 that have not yet been claimed are no longer covered (loss of prior acts). Request the expiring retro date or price an extended reporting period."
+      },
+      {
+       "label": "Terrorism (TRIA) election / premium",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$310 (accepted) [[E1 p.1]]",
+       "renewal": "Rejected [[R1 p.1]]",
+       "change": "Accepted → Rejected",
+       "badge": {
+        "impact": "reduced",
+        "severity": "high"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Terrorism cover is removed. The election is a documented client decision; a signed rejection must be on file."
+      },
+      {
+       "label": "Notice of Cancellation",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "30 days [[E1 p.3]]",
+       "renewal": "10 days [[R1 p.3]]",
+       "change": "Decreased 30 → 10 days",
+       "badge": {
+        "impact": "reduced",
+        "severity": "high"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Less time for the insured, lenders and certificate holders to arrange replacement cover - check contract and lender requirements."
+      },
+      {
+       "label": "Valuation",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Replacement Cost [[E1 p.1]]",
+       "renewal": "—",
+       "change": "Not found in renewal",
+       "badge": {
+        "impact": "confirm",
+        "severity": "medium"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Valuation was found in the prior documents (Replacement Cost) but not in the renewal. Either it was removed or the renewal states it differently - check the renewal."
+      },
+      {
+       "label": "Coinsurance",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "80% [[E1 p.1]]",
+       "renewal": "—",
+       "change": "Not found in renewal",
+       "badge": {
+        "impact": "confirm",
+        "severity": "medium"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Coinsurance was found in the prior documents (80%) but not in the renewal. Either it was removed or the renewal states it differently - check the renewal."
+      },
+      {
+       "label": "Causes of Loss Form",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Special [[E1 p.1]]",
+       "renewal": "—",
+       "change": "Not found in renewal",
+       "badge": {
+        "impact": "confirm",
+        "severity": "medium"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Causes of Loss Form was found in the prior documents (Special) but not in the renewal. Either it was removed or the renewal states it differently - check the renewal."
+      },
+      {
+       "label": "Premium Audit",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Annual, payroll basis [[E1 p.3]]",
+       "renewal": "Annual, payroll basis [[R1 p.3]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      }
+     ],
+     "footnote": null
+    }
+   ]
+  },
+  {
+   "number": "7",
+   "title": "Endorsements and Forms",
+   "page_break_before": false,
+   "summary": {
+    "headline": "Five forms removed and one restrictive exclusion added; three removals breach typical construction contract requirements.",
+    "bullets": [
+     "1 added · 5 removed · 1 edition change · 2 wording changes.",
+     "CG 20 01, CG 20 37 and CG 25 03 are gone.",
+     "Silica exclusion wording appears broader."
+    ],
+    "mix": {
+     "reduced": 4,
+     "confirm": 5,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 9
+   },
+   "risk": {
+    "level": "high",
+    "statement": "Lost contract-required forms create both coverage gaps and certificate-of-insurance exposure.",
+    "confidence": "medium",
+    "confidence_reason": "Form numbers matched on schedules with high certainty; the silica and CG 20 10 wording effects need a full-form read."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "forms",
+     "heading": "Forms removed",
+     "heading_note": "on expiring, not on renewal",
+     "intro": null,
+     "columns": [
+      "Form",
+      "Expiring",
+      "Renewal",
+      "Effect"
+     ],
+     "rows": [
+      {
+       "label": "CG 20 01 — Primary and Noncontributory - Other Insurance Condition",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "CG 20 01 04/13 [[E1 p.2]]",
+       "renewal": "Not on policy",
+       "change": "Removed at renewal",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "What it does",
+       "explain": "Makes coverage for qualifying additional insureds primary and noncontributory, often required by contracts."
+      },
+      {
+       "label": "CG 20 37 — Additional Insured - Owners, Lessees or Contractors - Completed Operations",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "CG 20 37 04/13 [[E1 p.2]]",
+       "renewal": "Not on policy",
+       "change": "Removed at renewal",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "What it does",
+       "explain": "Extends additional insured status to completed operations; frequently required by construction contracts."
+      },
+      {
+       "label": "CG 25 03 — Designated Construction Project(s) General Aggregate Limit",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "CG 25 03 05/09 [[E1 p.2]]",
+       "renewal": "Not on policy",
+       "change": "Removed at renewal",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "What it does",
+       "explain": "Applies a separate general aggregate limit to each designated construction project."
+      },
+      {
+       "label": "CP 00 10 — Building and Personal Property Coverage Form",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "CP 00 10 10/12 [[E1 p.2]]",
+       "renewal": "Not on policy",
+       "change": "Removed at renewal",
+       "badge": {
+        "impact": "confirm",
+        "severity": "high"
+       },
+       "explain_label": "What it does",
+       "explain": "Core commercial property coverage form for buildings and business personal property."
+      },
+      {
+       "label": "CP 10 30 — Causes of Loss - Special Form",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "CP 10 30 10/12 [[E1 p.2]]",
+       "renewal": "Not on policy",
+       "change": "Removed at renewal",
+       "badge": {
+        "impact": "confirm",
+        "severity": "high"
+       },
+       "explain_label": "What it does",
+       "explain": "Open-peril ('all risk') property coverage subject to listed exclusions; the broadest standard form."
+      }
+     ],
+     "footnote": null
+    },
+    {
+     "kind": "table",
+     "variant": "forms",
+     "heading": "Forms added",
+     "heading_note": "new on renewal",
+     "intro": null,
+     "columns": [
+      "Form",
+      "Expiring",
+      "Renewal",
+      "Effect"
+     ],
+     "rows": [
+      {
+       "label": "CG 21 47 — Employment-Related Practices Exclusion",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Not on policy",
+       "renewal": "CG 21 47 12/07 [[R1 p.2]]",
+       "change": "Added on renewal",
+       "badge": {
+        "impact": "reduced",
+        "severity": "high"
+       },
+       "explain_label": "What it does",
+       "explain": "Excludes injury arising from employment practices (wrongful termination, harassment, discrimination)."
+      }
+     ],
+     "footnote": null
+    },
+    {
+     "kind": "table",
+     "variant": "forms",
+     "heading": "Edition changes",
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Form",
+      "Expiring",
+      "Renewal",
+      "Effect"
+     ],
+     "rows": [
+      {
+       "label": "CG 20 10 — Additional Insured - Owners, Lessees or Contractors - Scheduled Person or Organization",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "CG 20 10 04/13 [[E1 p.2]]",
+       "renewal": "CG 20 10 12/19 [[R1 p.2]]",
+       "change": "Edition 04/13 → 12/19",
+       "badge": {
+        "impact": "confirm",
+        "severity": "medium"
+       },
+       "explain_label": "What it does",
+       "explain": "Adds scheduled parties as additional insureds for ongoing operations. Newer editions can narrow AI status to “required by written contract” and to the limits the contract requires."
+      }
+     ],
+     "footnote": null
+    },
+    {
+     "kind": "table",
+     "variant": "forms",
+     "heading": "Wording changes",
+     "heading_note": "same form, different text",
+     "intro": null,
+     "columns": [
+      "Form",
+      "Expiring",
+      "Renewal",
+      "Effect"
+     ],
+     "rows": [
+      {
+       "label": "Endorsement No. 3 - Silica and Respirable Dust Exclusion",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Present [[E1 p.5]]",
+       "renewal": "Present [[R1 p.5]]",
+       "change": "“except where” → “whether or not”",
+       "badge": {
+        "impact": "confirm",
+        "severity": "high"
+       },
+       "explain_label": "Wording",
+       "explain": "expiring “except where” [[E1 p.5]] → renewal “whether or not” [[R1 p.5]]. The change in conjunction likely removes a carve-back, broadening the exclusion - a client focus area."
+      },
+      {
+       "label": "IL 00 17 — Common Policy Conditions",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "IL 00 17 11/98 [[E1 p.4]]",
+       "renewal": "IL 00 17 11/98 [[R1 p.4]]",
+       "change": "“30” → “10”",
+       "badge": {
+        "impact": "confirm",
+        "severity": "medium"
+       },
+       "explain_label": "Wording",
+       "explain": "expiring “30” [[E1 p.4]] → renewal “10” [[R1 p.4]] - the notice-of-cancellation reduction in Section 6."
+      }
+     ],
+     "footnote": "**Forms unchanged:** CG 00 02 04/13 [[R1 p.2]], CG 24 04 05/09 [[R1 p.2]]."
+    }
+   ]
+  },
+  {
+   "number": "8",
+   "title": "Mid-term Changes on the Expiring Policy",
+   "page_break_before": false,
+   "summary": {
+    "headline": "The September 2025 limit increase was applied to the expiring policy but not carried into the renewal.",
+    "bullets": [
+     "Expiring column reflects the policy as amended.",
+     "1 change applied; none superseded."
+    ],
+    "mix": {
+     "reduced": 1,
+     "confirm": 1,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 2
+   },
+   "risk": {
+    "level": "high",
+    "statement": "Clients often assume mid-term increases persist; this one silently lapses at renewal.",
+    "confidence": "medium",
+    "confidence_reason": "Endorsement No. 2 references a form (CG 21 53) that is not on the policy."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": null,
+     "heading_note": null,
+     "intro": "The expiring column in this report is the policy as amended by these changes, applied in effective-date order.",
+     "columns": [
+      "Step",
+      "Expiring value",
+      "Renewal",
+      "Result"
+     ],
+     "rows": [
+      {
+       "label": "Each Occurrence Limit — Declarations",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$1,000,000 [[E1 p.1]]",
+       "renewal": "",
+       "change": "Stated on Declarations (page 1)",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Policy change · Endorsement No. 2 · eff. 09/15/2025",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$2,000,000 [[E1 p.6]]",
+       "renewal": "$1,000,000 [[R1 p.1]]",
+       "change": "Mid-term change not carried into renewal",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "The renewal reverts to the original declarations. Carriers often build renewals from the original policy rather than the endorsed policy - ask the underwriter to carry the change forward."
+      },
+      {
+       "label": "Policy change · Endorsement No. 2 · eff. 09/15/2025",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Deleted CG 21 53 [[E1 p.6]]",
+       "renewal": "",
+       "change": "Applied - but CG 21 53 01/96 was not found on the policy",
+       "badge": {
+        "impact": "confirm",
+        "severity": "low"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Deletion references a form that was never scheduled; confirm with the expiring carrier that no other form was intended."
+      }
+     ],
+     "footnote": null
+    }
+   ]
+  },
+  {
+   "number": "9",
+   "title": "Contract Requirements and Broker Checklist",
+   "page_break_before": false,
+   "summary": {
+    "headline": "Three contract requirements met on the expiring policy are not met on the renewal; ongoing-ops AI and waiver of subrogation carry over.",
+    "bullets": [
+     "Hold certificate reissue until forms are confirmed.",
+     "Renewal Endorsement No. 1 has no effective date."
+    ],
+    "mix": {
+     "reduced": 5,
+     "confirm": 2,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 7
+   },
+   "risk": {
+    "level": "high",
+    "statement": "Breach of client contracts is likely if the renewal binds as quoted.",
+    "confidence": "high",
+    "confidence_reason": "Requirements matched on form numbers listed on both forms schedules."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": null,
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Check",
+      "Expiring",
+      "Renewal",
+      "Change / Assessment"
+     ],
+     "rows": [
+      {
+       "label": "Contract requirement: Additional insured - completed operations",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Yes - CG 20 37 [[E1 p.2]]",
+       "renewal": "Not found",
+       "change": "Lost on renewal",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Contracts that require it would be breached, and certificates issued on expiring terms would overstate coverage."
+      },
+      {
+       "label": "Contract requirement: Primary & noncontributory",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Yes - CG 20 01 [[E1 p.2]]",
+       "renewal": "Not found",
+       "change": "Lost on renewal",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Contracts that require it would be breached, and certificates issued on expiring terms would overstate coverage."
+      },
+      {
+       "label": "Contract requirement: Per project / per location aggregate",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Yes - CG 25 03 [[E1 p.2]]",
+       "renewal": "Not found",
+       "change": "Lost on renewal",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Contracts that require it would be breached, and certificates issued on expiring terms would overstate coverage."
+      },
+      {
+       "label": "Claims-made continuity (retroactive date)",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Claims-Made; retro 01/01/2019 [[E1 p.1]]",
+       "renewal": "Claims-Made; retro 03/01/2026 [[R1 p.1]]",
+       "change": "Retro advanced",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Loss of prior acts - see Section 6."
+      },
+      {
+       "label": "Mid-term changes carried into renewal",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "1 value changed mid-term [[E1 p.6]]",
+       "renewal": "1 not carried forward [[R1 p.1]]",
+       "change": "Each Occurrence Limit",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Expiring as endorsed $2,000,000; renewal $1,000,000 - see Section 8."
+      },
+      {
+       "label": "Carrier change",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Keystone Casualty Company [[E1 p.1]]",
+       "renewal": "Granite Specialty Insurance Company [[R1 p.1]]",
+       "change": "New carrier",
+       "badge": {
+        "impact": "confirm",
+        "severity": "medium"
+       },
+       "explain_label": "Why it matters",
+       "explain": "Confirm AM Best rating and admitted status, reissue certificates, check lender/landlord notice requirements."
+      },
+      {
+       "label": "Endorsement wording that needs a read",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "1 note [[E1 p.6]]",
+       "renewal": "1 note [[R1 p.6]]",
+       "change": "2 notes",
+       "badge": {
+        "impact": "confirm",
+        "severity": "low"
+       },
+       "explain_label": "Why it matters",
+       "explain": "[expiring] Endorsement No. 2 deletes CG 21 53 01/96, not found on the policy • [renewal] Endorsement No. 1 has no effective date - applied after dated changes; review."
+      },
+      {
+       "label": "Contract requirement: Additional insured - ongoing operations",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Yes - CG 20 10 [[E1 p.2]]",
+       "renewal": "Yes - CG 20 10 [[R1 p.2]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Contract requirement: Waiver of subrogation",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Yes - CG 24 04 [[E1 p.2]]",
+       "renewal": "Yes - CG 24 04 [[R1 p.2]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Excess and umbrella tower",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "—",
+       "renewal": "—",
+       "change": "Out of scope in comparison mode",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      }
+     ],
+     "footnote": null
+    }
+   ]
+  },
+  {
+   "number": "10",
+   "title": "Client Focus Areas",
+   "page_break_before": false,
+   "summary": {
+    "headline": "All three topics the client asked about are affected by the renewal; silica is the one most likely to surprise them.",
+    "bullets": [
+     "Silica exclusion wording broadened.",
+     "4 additional-insured changes, 3 of them narrower.",
+     "Terrorism rejected."
+    ],
+    "mix": {
+     "reduced": 2,
+     "confirm": 1,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 3
+   },
+   "risk": {
+    "level": "medium",
+    "statement": "Each focus area has at least one less favourable change the client should hear about directly.",
+    "confidence": "high",
+    "confidence_reason": "Every finding is backed by a verbatim quote with a page reference."
+   },
+   "blocks": [
+    {
+     "kind": "focus",
+     "cards": [
+      {
+       "topic": "silica",
+       "badge": {
+        "impact": "confirm",
+        "severity": "high"
+       },
+       "mentions": "3 mentions in prior · 3 in renewal",
+       "related": "Related change: Endorsement No. 3 - Silica and Respirable Dust Exclusion (wording changed, review).",
+       "quotes": [
+        {
+         "side": "expiring",
+         "text": "This insurance does not apply to bodily injury arising out of the inhalation of silica dust,",
+         "ref": "E1 p.5"
+        },
+        {
+         "side": "renewal",
+         "text": "This insurance does not apply to bodily injury arising out of the inhalation of silica dust,",
+         "ref": "R1 p.5"
+        }
+       ]
+      },
+      {
+       "topic": "additional insured",
+       "badge": {
+        "impact": "reduced",
+        "severity": "critical"
+       },
+       "mentions": "2 mentions in prior · 2 in renewal",
+       "related": "Related changes: AI - completed operations (narrower); CG 20 01 (removed, narrower); CG 20 37 (removed, narrower); CG 20 10 (edition changed, review).",
+       "quotes": [
+        {
+         "side": "expiring",
+         "text": "CG 20 37 04 13 Additional Insured - Completed Operations",
+         "ref": "E1 p.2"
+        },
+        {
+         "side": "renewal",
+         "text": "CG 20 10 12 19 Additional Insured - Owners, Lessees or Contractors",
+         "ref": "R1 p.2"
+        },
+        {
+         "side": "renewal",
+         "text": "The schedule of the Additional Insured endorsement CG 20 10 is amended to add Front Range Water",
+         "ref": "R1 p.6"
+        }
+       ]
+      },
+      {
+       "topic": "terrorism",
+       "badge": {
+        "impact": "reduced",
+        "severity": "high"
+       },
+       "mentions": "1 mention in prior · 1 in renewal",
+       "related": null,
+       "quotes": [
+        {
+         "side": "expiring",
+         "text": "Terrorism (TRIA) Premium: $310",
+         "ref": "E1 p.1"
+        },
+        {
+         "side": "renewal",
+         "text": "Terrorism (TRIA) Premium: Rejected",
+         "ref": "R1 p.1"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "number": "11",
+   "title": "Items Pending Confirmation with the Carrier",
+   "page_break_before": false,
+   "summary": {
+    "headline": "Both open items concern the missing Commercial Property part - one carrier answer resolves them.",
+    "bullets": [
+     "Confirm whether property is quoted separately.",
+     "If not, market property cover before 03/01/2026."
+    ],
+    "mix": {
+     "reduced": 0,
+     "confirm": 2,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 2
+   },
+   "risk": {
+    "level": "medium",
+    "statement": "Risk becomes Critical if property is not being renewed anywhere.",
+    "confidence": "low",
+    "confidence_reason": "Absence of forms is clear; the reason for the absence is unknown."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "pending",
+     "heading": null,
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Item",
+      "Expiring",
+      "Renewal",
+      "Next step"
+     ],
+     "rows": [
+      {
+       "label": "CP 00 10 — Building and Personal Property Coverage Form",
+       "tag": null,
+       "sublabel": "Core commercial property coverage form for buildings and business personal property.",
+       "expiring": "CP 00 10 10/12 [[E1 p.2]]",
+       "renewal": "—",
+       "change": "Pending confirmation with the carrier",
+       "badge": {
+        "impact": "confirm",
+        "severity": "high"
+       },
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "CP 10 30 — Causes of Loss - Special Form",
+       "tag": null,
+       "sublabel": "Open-peril ('all risk') property coverage subject to listed exclusions.",
+       "expiring": "CP 10 30 10/12 [[E1 p.2]]",
+       "renewal": "—",
+       "change": "Pending confirmation with the carrier",
+       "badge": {
+        "impact": "confirm",
+        "severity": "high"
+       },
+       "explain_label": "Why it matters",
+       "explain": null
+      }
+     ],
+     "footnote": null
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "ref": "E1",
+   "document": "summit_expiring_2025.pdf",
+   "side": "Expiring",
+   "type": "Policy",
+   "pages": 7,
+   "how_read": "Digital text"
+  },
+  {
+   "ref": "R1",
+   "document": "summit_renewal_2026.pdf",
+   "side": "Renewal policy",
+   "type": "Policy",
+   "pages": 7,
+   "how_read": "Digital + 1 scanned page"
+  }
+ ],
+ "audit": {}
+}

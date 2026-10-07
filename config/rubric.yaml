@@ -1,0 +1,122 @@
+# Deterministic classification rubric. These outcomes are fixed by code; the model may only add
+# explanations for them. Anything not covered here is classified by the model (with a safe default).
+
+# numeric limit changes (expiring -> renewal), percent of the expiring value
+limits:
+  decrease:   # severity by size of the cut
+    - {min_pct: 50, severity: critical}
+    - {min_pct: 25, severity: high}
+    - {min_pct: 0,  severity: medium}
+  increase:
+    - {min_pct: 50, severity: medium}
+    - {min_pct: 0,  severity: low}
+  removed: {impact: reduced, severity: high}          # value -> None / Excluded
+  missing_in_renewal: {impact: confirm, severity: high}
+  new_in_renewal: {impact: improved, severity: low}
+
+deductibles:
+  increase:
+    - {min_pct: 100, severity: high}
+    - {min_pct: 0,   severity: medium}
+  decrease: {impact: improved, severity: low}
+  introduced: {impact: reduced, severity: high}       # None -> amount
+  missing_in_renewal: {impact: confirm, severity: medium}
+  new_in_renewal: {impact: reduced, severity: medium}
+
+premium:
+  changed: {impact: no_impact, severity: low}          # premium never counts as a coverage improvement
+  missing_in_renewal: {impact: confirm, severity: medium}
+
+terms:
+  missing_in_renewal: {impact: confirm, severity: medium}
+  default_change: {impact: confirm, severity: medium}  # until the model reads it
+
+policy:
+  date_rollover: {impact: no_impact, severity: low}    # effective / expiration moved by about one term
+  policy_number_changed: {impact: no_impact, severity: low}
+  insurer_changed: {impact: confirm, severity: medium}
+  named_insured_changed: {impact: confirm, severity: high}
+  continuity_gap: {impact: reduced, severity: critical}
+  continuity_overlap: {impact: confirm, severity: medium}
+  coverage_part_dropped: {impact: reduced, severity: critical}
+  coverage_part_added: {impact: improved, severity: medium}
+  now_non_admitted: {impact: reduced, severity: high}
+  default_change: {impact: confirm, severity: low}
+
+forms:
+  removed_default: {impact: confirm, severity: medium}
+  removed_contract_slot: {impact: reduced, severity: critical}
+  added_default: {impact: confirm, severity: medium}
+  added_exclusion: {impact: reduced, severity: high}    # title says exclusion / limitation
+  edition_changed: {impact: confirm, severity: medium}
+  wording_changed: {impact: confirm, severity: medium}
+  exclusion_words: ["exclusion", "excluded", "limitation", "restriction"]
+  notice_words: ["notice", "privacy", "policyholder information", "disclosure"]
+
+# risk guards
+risk:
+  primary_sections: ["3", "4", "5", "6", "7", "8", "9"]
+  floor_high_if: {impact: reduced, severity: critical}
+  floor_medium_if: [{impact: reduced, severity: high}, {impact: confirm, severity: high}]
+
+critical_changes:
+  max_items: 10
+  severities: [critical, high]
+  theme_order: [continuity, scope, limits, contracts, market]
+
+# days tolerance when deciding that a date moved by "one term"
+term_tolerance_days: 3
+
+# default explanations used when the model is unavailable or its text fails validation.
+# {label}, {exp}, {ren}, {gap} are filled by code.
+why_templates:
+  missing_in_renewal: "{label} was found in the prior documents ({exp}) but not in the renewal. Either it was removed or the renewal states it differently - check the renewal."
+  new_in_renewal: "{label} appears on the renewal ({ren}) but not in the prior documents. Confirm whether it was requested and how it affects cover."
+  limit_decrease: "The limit caps what the insurer pays; a lower limit leaves more of a loss uninsured."
+  limit_increase: "More capacity for this coverage on the renewal."
+  limit_removed: "This coverage no longer has a limit on the renewal, so the protection is effectively removed."
+  deductible_increase: "The insured retains more of each loss before the policy responds."
+  deductible_introduced: "The insured now retains the first {ren} of each loss; part of any premium saving is shifted back to the client as retained risk."
+  deductible_decrease: "The insured retains less of each loss."
+  premium_changed: "Informational; premium changes do not alter coverage."
+  insurer_changed: "Insurer changed. Confirm AM Best rating, reissue certificates of insurance and compare full policy forms - carrier-specific forms often differ from ISO wording."
+  named_insured_changed: "The named insured differs. Confirm the legal entity is correct before binding; certificates and contracts rely on it."
+  continuity_gap: "The renewal starts {gap} after the expiring policy ends, so there is no coverage in between."
+  continuity_overlap: "The policies overlap by {gap}. Confirm the intended inception time to avoid paying twice."
+  coverage_part_dropped: "{label} appears on the expiring policy but not in the renewal documents. Either the coverage part is not being renewed (the client needs replacement cover or written notice) or it is quoted separately - confirm before the expiration date."
+  coverage_part_added: "{label} is new on the renewal. Confirm it was requested and priced."
+  now_non_admitted: "A non-admitted (surplus lines) policy is not backed by the state guaranty fund, carries surplus lines tax and filing duties, and may need diligent-effort documentation."
+  text_changed: "The wording or value changed between the two policies; confirm the effect with the carrier."
+  form_removed: "This form is on the expiring policy but not on the renewal; confirm whether the change was intended."
+  form_added: "This form is new on the renewal; confirm it was requested and read its effect."
+  form_edition: "A newer edition can change wording; compare the editions before presenting."
+  form_wording: "Same form, different text; read the changed passage before presenting."
+
+# default next steps for the critical-changes table (the model writes better ones when available)
+next_step_templates:
+  continuity: "Ask the carrier to align the inception time with the expiring policy's expiry."
+  coverage_parts: "Confirm whether {label} is quoted separately before {deadline}."
+  admitted: "Disclose to the client; complete the diligent-effort file."
+  form_removed: "Ask the carrier to reinstate {label} or explain its removal."
+  form_added: "Read {label} and confirm it was requested."
+  form_edition: "Compare the {label} editions before presenting."
+  form_wording: "Read the changed wording in {label}."
+  value_reduced: "Ask the underwriter to restore the expiring {label}."
+  deductible_reduced: "Ask the underwriter to remove or lower the new {label}."
+  value_confirm: "Confirm {label} with the carrier."
+  default: "Review with the carrier before {deadline}."
+
+# default theme of a critical change by finding kind / section (the model may refine)
+themes:
+  continuity: continuity
+  coverage_parts: scope
+  admitted: market
+  insurer: market
+  form_removed: scope
+  form_added: scope
+  form_contract_slot: contracts
+  limits: limits
+  premium: scope
+  terms: scope
+  midterm: limits
+  default: scope

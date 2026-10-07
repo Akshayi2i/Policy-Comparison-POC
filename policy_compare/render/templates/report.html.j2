@@ -1,0 +1,215 @@
+{% import "macros.html.j2" as m with context %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ r.meta.title }}</title>
+<style>{{ css }}</style>
+</head>
+<body class="edition-{{ edition }}">
+
+{# =================== COVER BAND =================== #}
+<header class="cover">
+  <div class="cover-top">
+    <div class="brand">{{ m.brand_mark() }}<span class="brand-name">{{ r.meta.brand }}</span><span class="brand-sep"></span><span class="brand-agency">{{ r.cover.agency }}</span></div>
+    <span class="pill-confidential">CONFIDENTIAL</span>
+  </div>
+  <div class="cover-kicker">POLICY RENEWAL COMPARISON</div>
+  <div class="cover-insured">{{ r.cover.insured }}</div>
+  <div class="cover-sub">{{ r.cover.subtitle }}</div>
+  <div class="cover-cards">
+    <div class="cover-card"><div class="lbl">EXPIRING</div><div class="carrier">{{ r.cover.expiring.carrier }}</div><div class="line">#{{ r.cover.expiring.policy_number }} · {{ r.cover.expiring.period }}</div></div>
+    <div class="cover-arrow">→</div>
+    <div class="cover-card"><div class="lbl">RENEWAL</div><div class="carrier">{{ r.cover.renewal.carrier }}</div><div class="line">#{{ r.cover.renewal.policy_number }} · {{ r.cover.renewal.period }}</div></div>
+  </div>
+  <div class="cover-prepared">{{ r.cover.prepared_line }}</div>
+</header>
+
+{# =================== 1 EXECUTIVE SUMMARY =================== #}
+{% set ex = r.executive %}
+{{ m.sec_head("1", "Executive Summary") }}
+<div class="hero lvl-{{ ex.risk }}">
+  <div class="hero-left">
+    <div class="lbl">OVERALL RISK ANALYSIS</div>
+    <div class="lvl">{{ m.meter(ex.risk) }}<span>{{ m.LVL_LABEL[ex.risk] }} risk</span></div>
+    <div class="conf">Confidence: {{ m.LVL_LABEL[ex.confidence] }}</div>
+  </div>
+  <div class="hero-right">
+    <div class="verdict">{{ ex.verdict | rich }}</div>
+    <div class="note">{{ ex.confidence_note | rich }}</div>
+  </div>
+</div>
+<div class="kpis">
+  {% for k in ex.kpis %}<div class="kpi{{ ' accent' if k.accent else '' }}"><div class="lbl">{{ k.label }}</div><div class="val">{{ k.value }}</div><div class="sub">{{ k.sub }}</div></div>{% endfor %}
+</div>
+<div class="changes">
+  <div class="changes-top"><span class="ttl">{{ ex.changes_total }} change{{ '' if ex.changes_total == 1 else 's' }} found</span>{{ m.counts(ex.mix) }}</div>
+  {{ m.bar(ex.mix) }}
+  <div class="chips">
+    {% for k in ["reduced", "confirm", "no_impact", "improved"] %}{% if ex.mix[k] %}<span class="chip-count">{{ m.impact_chip(k) }}{{ ex.mix[k] }}</span>{% endif %}{% endfor %}
+  </div>
+</div>
+
+{# =================== 2 CRITICAL CHANGES =================== #}
+{% set cr = r.critical %}
+{{ m.sec_head("2", "Critical Changes") }}
+<p class="lead">{{ cr.intro | rich }}</p>
+{% if cr.themes %}
+<div class="themes">
+  {% for t in cr.themes %}<div class="theme"><span class="n th-{{ t.theme }}">{{ t.count }}</span><span class="t">{{ m.THEME_LABEL[t.theme] }}</span></div>{% endfor %}
+</div>
+{% endif %}
+{% if cr.items %}
+<table class="tbl crit w-crit">
+  <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"><col class="c5"></colgroup>
+  <thead><tr><th>#</th><th>Critical change</th><th>Expiring → Renewal</th><th>Severity</th><th>Next step before<br>{{ cr.deadline }}</th></tr></thead>
+  {% for c in cr.items %}
+  <tbody><tr>
+    <td><span class="rank{{ '' if c.badge.severity == 'critical' else ' outline' }}{{ ' wide' if c.rank > 9 else '' }}">{{ c.rank }}</span></td>
+    <td><div class="ttl">{{ c.title }}</div><div class="theme-lbl th-{{ c.theme }}">{{ m.THEME_TAG[c.theme] }}</div><div class="desc">{{ c.description }}</div></td>
+    <td class="er"><div class="from">{{ c.expiring | rich }}</div><div class="arrow">↓</div><div class="to">{{ c.renewal | rich }}</div></td>
+    <td>{{ m.badge(c.badge) }}</td>
+    <td><div class="next"><span class="box"></span><span>{{ c.next_step }}</span></div></td>
+  </tr></tbody>
+  {% endfor %}
+</table>
+{% else %}
+<div class="empty">{{ cr.empty_note or "No critical changes found." }}</div>
+{% endif %}
+{% if cr.improvements %}
+<div class="improve-h">Changes that improve on the expiring terms</div>
+<div class="improve">
+  {% for i in cr.improvements %}<div class="card">{{ m.badge(i.badge) }}<div>{{ i.text | rich }}</div></div>{% endfor %}
+</div>
+{% endif %}
+
+{# =================== § SECTION OVERVIEW =================== #}
+<section class="page-break ov-sec">
+{{ m.sec_head("§", "Section Overview", alt=True) }}
+<p class="lead">Section summaries and Risk Analysis at a glance. Each section below opens with the same summary and a fuller Risk Analysis.</p>
+<table class="tbl ov w-ov">
+  <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
+  <thead><tr><th>§</th><th>Section &amp; key takeaway</th><th>Change mix</th><th>Risk analysis</th></tr></thead>
+  {% for o in r.overview %}
+  <tbody><tr>
+    <td><span class="n">{{ o.number }}</span></td>
+    <td><div class="ttl">{{ o.title }}</div><div class="tk">{{ o.takeaway }}</div></td>
+    <td class="mix">{{ m.bar(o.mix, "mini") }}<div>{{ m.counts(o.mix) }}</div></td>
+    <td><span class="pill lvl-{{ o.risk }}">{{ o.risk | upper }}</span></td>
+  </tr></tbody>
+  {% endfor %}
+</table>
+</section>
+
+{# =================== SECTIONS 3..N =================== #}
+{% for s in r.sections %}
+<section class="{{ 'page-break' if s.page_break_before else '' }}">
+{{ m.sec_head(s.number, s.title) }}
+<div class="cards">
+  <div class="sum">
+    <div class="card-lbl">SECTION SUMMARY</div>
+    <div class="hl">{{ s.summary.headline }}</div>
+    {% if s.summary.bullets %}<ul>{% for b in s.summary.bullets %}<li>{{ b | rich }}</li>{% endfor %}</ul>{% endif %}
+    <div class="mixline">{{ m.bar(s.summary.mix) }}<span class="cmp"><b>{{ s.summary.items_compared }}</b> item{{ '' if s.summary.items_compared == 1 else 's' }} compared</span>{{ m.counts(s.summary.mix) }}</div>
+  </div>
+  <div class="risk lvl-{{ s.risk.level }}">
+    <div class="risk-top"><span class="lbl">{{ m.shield() }}RISK ANALYSIS</span><span class="lvl">{{ m.meter(s.risk.level) }}{{ m.LVL_LABEL[s.risk.level] }} risk</span></div>
+    <div class="stmt">{{ s.risk.statement | rich }}</div>
+    <div class="conf"><strong>Confidence: {{ m.LVL_LABEL[s.risk.confidence] }}.</strong> {{ s.risk.confidence_reason | rich }}</div>
+  </div>
+</div>
+
+{% for blk in s.blocks %}
+{% if blk.kind == "table" %}
+<div class="block">
+  {% if blk.heading %}<div class="grp-h">{{ blk.heading }}{% if blk.heading_note %}<span class="note">{{ blk.heading_note }}</span>{% endif %}</div>{% endif %}
+  {% if blk.intro %}<p class="intro">{{ blk.intro | rich }}</p>{% endif %}
+  {% if blk.rows %}
+  <table class="tbl cmp w-{{ blk.variant }}">
+    <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
+    <thead><tr>{% for c in blk.columns %}<th>{{ c }}</th>{% endfor %}</tr></thead>
+    {% for row in blk.rows %}
+    {% if row.badge %}
+    <tbody class="item i-{{ row.badge.impact }}{{ '' if row.explain else ' nowhy' }}">
+      <tr class="main">
+        <td><div class="lab">{{ row.label | rich }}</div>{% if row.tag %}<span class="tag">{{ row.tag }}</span>{% endif %}{% if row.sublabel %}<div class="sublabel">{{ row.sublabel | rich }}</div>{% endif %}</td>
+        <td>{{ row.expiring | rich }}</td>
+        <td>{{ row.renewal | rich }}</td>
+        <td class="chg">{% if row.change %}<div>{{ row.change | rich }}</div>{% endif %}{{ m.badge(row.badge) }}</td>
+      </tr>
+      {% if row.explain %}<tr class="why"><td colspan="4"><strong>{{ row.explain_label }}:</strong> {{ row.explain | rich }}</td></tr>{% endif %}
+    </tbody>
+    {% else %}
+    <tbody class="muted"><tr>
+      <td><div class="lab">{{ row.label | rich }}</div>{% if row.sublabel %}<div class="sublabel">{{ row.sublabel | rich }}</div>{% endif %}</td>
+      <td>{{ row.expiring | rich }}</td>
+      <td>{{ row.renewal | rich }}</td>
+      <td>{{ (row.change or "No change") | rich }}</td>
+    </tr></tbody>
+    {% endif %}
+    {% endfor %}
+  </table>
+  {% endif %}
+  {% if blk.footnote %}<div class="foot">{{ blk.footnote | rich }}</div>{% endif %}
+</div>
+{% elif blk.kind == "focus" %}
+<div class="block">
+  {% for c in blk.cards %}
+  <div class="focus">
+    <div class="focus-top"><span class="topic">“{{ c.topic }}”</span>{{ m.badge(c.badge) }}<span class="mentions">{{ c.mentions }}</span></div>
+    {% if c.related %}<div class="rel">{{ c.related | rich }}</div>{% endif %}
+    {% for q in c.quotes %}<div class="quote"><span class="side {{ q.side }}">{{ q.side | upper }}</span><span class="q">“{{ q.text }}”{% if q.ref %}<span class="ref">{{ q.ref }}</span>{% endif %}</span></div>{% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% elif blk.kind == "note" %}
+<div class="block"><div class="empty">{{ blk.text | rich }}</div></div>
+{% endif %}
+{% endfor %}
+</section>
+{% endfor %}
+
+{# =================== A SOURCE DOCUMENTS =================== #}
+<section>
+{{ m.sec_head("A", "Source Documents", alt=True) }}
+<table class="tbl src w-src">
+  <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"><col class="c5"><col class="c6"></colgroup>
+  <thead><tr><th>Ref</th><th>Document</th><th>Side</th><th>Type</th><th>Pages</th><th>How it was read</th></tr></thead>
+  {% for d in r.sources %}
+  <tbody><tr><td><span class="ref">{{ d.ref }}</span></td><td>{{ d.document }}</td><td>{{ d.side }}</td><td>{{ d.type }}</td><td>{{ d.pages }}</td><td>{{ d.how_read }}</td></tr></tbody>
+  {% endfor %}
+</table>
+</section>
+
+{# =================== B HOW TO READ =================== #}
+<section class="page-break appx">
+{{ m.sec_head("B", "How to Read This Report", alt=True) }}
+<div class="legend">
+  <div class="legend-grid">
+    <div>{{ m.badge({"impact": "reduced", "severity": "critical"}) }}<div class="d">Coverage reduced, or a protection the insured relies on is missing.</div></div>
+    <div>{{ m.badge({"impact": "improved", "severity": "medium"}) }}<div class="d">Coverage increased or broadened.</div></div>
+    <div>{{ m.badge({"impact": "no_impact", "severity": "low"}) }}<div class="d">Changed, with no effect on coverage (dates, numbers, premium).</div></div>
+    <div>{{ m.badge({"impact": "confirm", "severity": "high"}) }}<div class="d">Effect depends on wording or facts still being confirmed.</div></div>
+  </div>
+  {% if edition == "grayscale" %}
+  <div class="legend-row"><span class="k">Grayscale key</span><span>— bars and row edges:</span>
+    <span class="gk"><i class="gk-sw seg-reduced"></i>solid = Reduced</span>
+    <span class="gk"><i class="gk-sw seg-confirm"></i>hatched / dashed = Confirm</span>
+    <span class="gk"><i class="gk-sw seg-no_impact"></i>light grey = No impact</span>
+    <span class="gk"><i class="gk-sw seg-improved"></i>outlined = Improved</span>
+  </div>
+  {% endif %}
+  <div class="legend-row"><span class="k">Severity bars</span><span>— how much the change matters to this client:</span>
+    {% for s in ["critical", "high", "medium", "low"] %}<span class="sb">{{ m.sevbars(s, 6.6) }}{{ m.SEV_LABEL[s] }}</span>{% endfor %}
+  </div>
+</div>
+<div class="explain3">
+  <div><h4>Risk Analysis</h4><p>Every section opens with a Risk Analysis: how much the section's changes expose the client (<em>Low / Medium / High</em>), and how confident Fideon is in the underlying reading (<em>Confidence</em>), with the reason.</p></div>
+  <div><h4>Section summary</h4><p>A one-line takeaway, key points and the change mix bar showing how many items in the section fall into each {{ "category" if edition == "grayscale" else "colour" }}.</p></div>
+  <div><h4>Page references</h4><p>References such as <span class="ref">E1 p.3</span> give the source document (Appendix A) and page each value was read from. Expiring values are the policy as amended by its endorsements.</p></div>
+</div>
+<div class="disclaimer">{{ r.meta.disclaimer }}</div>
+</section>
+
+</body>
+</html>

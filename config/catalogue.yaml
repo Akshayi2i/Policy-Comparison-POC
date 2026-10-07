@@ -1,0 +1,131 @@
+# Comparison catalogue — how elements of a canonical_insurance_policy JSON map onto report sections.
+# Nothing here is specific to one policy: rules match JSON paths with glob patterns ("*" = one segment,
+# "**" = any number of segments). The first matching rule wins. Paths use dots; list items appear as
+# name[key=value] (identity-aligned), and patterns match against the path with list keys removed, e.g.
+# "package_endorsement.coverages.limit".
+#
+# Fields per rule:
+#   section   policy | premium | limits | terms | ignore
+#   group     sub-heading inside the section (optional; default = container section_title or name)
+#   label     display label (optional; default = cell label > list identity > humanized key)
+#   type      limit | deductible | premium | date | identifier | party | text | term
+#   role      special meaning used by the engine (insurer, named_insured, policy_number, effective_date,
+#             expiration_date, time_basis, total_premium)
+#   always_show  show the row even when unchanged (otherwise unchanged rows collapse into "Also unchanged")
+# A rule may match on `match` (path glob), `label` (case-insensitive glob on the display label), or both.
+
+schema:
+  name: canonical_insurance_policy
+  major_version: 1
+
+# subtrees never walked as comparable values (they are used for text, pages and metadata instead)
+exclude_top_level: [schema, source_document, documents, extraction, forms_inventory]
+
+# keys that are bookkeeping, provenance or layout, never compared
+metadata_keys: [sequence, page, page_start, page_end, page_count, document_sequence, attached_in_document,
+                edition_matches_attached_form, listed_in_forms_inventory, forms_inventory_sequence,
+                bookmark_title, section_title, note, limit_column_heading, signature_image_present,
+                coverage_text, label, kind, text_in_image, bbox]
+
+# list items are aligned by the first of these keys that is present and unique on both sides
+identity_keys: [form_number, coverage, description, hazard, name, location_number, building_number, id, code, title]
+
+# objects compared as one value through their "text" field (e.g. addresses)
+text_objects:
+  required_keys: [text]
+  any_of_keys: [street_lines, city, postal_code, state]
+
+rules:
+  - {match: "named_insured.name",                 section: policy,  label: "Named Insured", type: party, role: named_insured, always_show: true}
+  - {match: "named_insured.mailing_address",      section: policy,  label: "Mailing address", type: text}
+  - {match: "carrier.name",                       section: policy,  label: "Insurer", type: party, role: insurer, always_show: true}
+  - {match: "carrier.company_type",               section: policy,  label: "Insurer type", type: text}
+  - {match: "carrier.**",                         section: ignore}
+  - {match: "agent.name",                         section: policy,  label: "Agent / producer", type: party}
+  - {match: "agent.**",                           section: ignore}
+  - {match: "policy.policy_number",               section: policy,  label: "Policy Number", type: identifier, role: policy_number, always_show: true}
+  - {match: "policy.policy_period.effective_date", section: policy, label: "Effective Date", type: date, role: effective_date, always_show: true}
+  - {match: "policy.policy_period.expiration_date", section: policy, label: "Expiration Date", type: date, role: expiration_date, always_show: true}
+  - {match: "policy.policy_period.effective_time_basis", section: policy, label: "Policy period time basis", type: text, role: time_basis}
+  - {match: "policy.policy_type",                 section: policy,  label: "Policy type", type: text}
+  - {match: "policy.transaction_type",            section: policy,  label: "Transaction type", type: text}
+  - {match: "policy.class_description",           section: policy,  label: "Class / operations", type: text}
+  - {match: "policy.billing_type",                section: premium, group: "Premium", label: "Billing", type: text}
+  - {match: "policy.**",                          section: ignore}
+
+  - {match: "**.form_number",                    section: ignore}
+  - {match: "**.edition",                        section: ignore}
+  - {match: "**.package_name",                   section: terms,   label: "Package", type: text}
+  - {match: "premium.annual_premium",             section: premium, group: "Premium", label: "Total Premium", type: premium, role: total_premium, always_show: true}
+  - {match: "premium.total_premium",              section: premium, group: "Premium", label: "Total Premium", type: premium, role: total_premium, always_show: true}
+  - {match: "premium.*",                          section: premium, group: "Premium", type: premium}
+  - {label: "*premium*",                         section: premium, group: "Premium by coverage", type: premium}
+  - {label: "*deductible*",                      section: premium, group: "Deductibles and retentions", type: deductible}
+  - {match: "**.premium",                         section: premium, group: "Premium by coverage", type: premium}
+  - {match: "**.*premium*",                       section: premium, group: "Premium by coverage", type: premium}
+  - {match: "**.*deductible*",                    section: premium, group: "Deductibles and retentions", type: deductible}
+  - {match: "**.*retention*",                     section: premium, group: "Deductibles and retentions", type: deductible}
+  - {match: "**.*sir*",                           section: premium, group: "Deductibles and retentions", type: deductible}
+
+  - {match: "**.*valuation*",                     section: terms,   type: term}
+  - {match: "**.cause_of_loss",                   section: terms,   label: "Causes of loss", type: term}
+  - {match: "**.*coinsurance*",                   section: terms,   type: term}
+  - {match: "**.*replacement_cost*",              section: terms,   type: term}
+  - {match: "**.excluded_hazards.checked",        section: terms,   type: term}
+  - {match: "**.conditions",                      section: terms,   type: term}
+  - {match: "**.construction",                    section: terms,   type: term}
+  - {match: "**.county",                          section: ignore}
+  - {match: "**.address",                         section: terms,   label: "Location", type: text}
+  - {match: "**.retroactive_date",                section: terms,   label: "Retroactive Date", type: date}
+  - {match: "**.description_of_tools",            section: terms,   type: text}
+  - {match: "**.limit_text",                      section: ignore}
+  - {match: "**.policy_number",                   section: ignore}
+  - {match: "**.description",                     section: ignore}
+  - {match: "**.location",                        section: ignore}
+
+  - {match: "**.limits.each_occurrence",        section: limits,  type: limit, always_show: true}
+  - {match: "**.limits.*aggregate*",             section: limits,  type: limit, always_show: true}
+  - {match: "**.limits.*",                        section: limits,  type: limit}
+  - {match: "**.*limit*",                         section: limits,  type: limit}
+  - {match: "**.limit",                           section: limits,  type: limit}
+
+# expected elements: when present in neither policy they are listed in the section footnote
+# "Not shown on either declarations page". Each entry: label + path patterns that would satisfy it.
+expected:
+  premium:
+    - {label: "Liability Deductible / SIR", any: ["**.*liability*deductible*", "**.*sir*", "**.*self_insured*"]}
+    - {label: "Wind / Hail Deductible", any: ["**.*wind*", "**.*hail*"]}
+  limits:
+    - {label: "Business Income / Extra Expense", any: ["**.*business_income*", "**.*extra_expense*", "**.*loss_of_income*"]}
+  terms:
+    - {label: "Coinsurance", any: ["**.*coinsurance*"]}
+
+# coverage parts (lines of business): a top-level container counts as present when it holds any real value
+coverage_parts:
+  general_liability: "General Liability"
+  property: "Property"
+  package_endorsement: "Package endorsement"
+  tools_and_equipment_coverage_list: "Tools & Equipment"
+  optional_liability_coverage_list: "Optional Liability"
+  commercial_property: "Commercial Property"
+  commercial_auto: "Commercial Auto"
+  umbrella: "Umbrella / Excess"
+  inland_marine: "Inland Marine"
+  workers_compensation: "Workers Compensation"
+
+# text signals searched in the policy text
+signals:
+  surplus_lines: ["surplus lines", "non-admitted", "nonadmitted", "excess and surplus"]
+  claims_made: ["claims-made", "claims made"]
+  occurrence: ["occurrence"]
+  retro_date: ["retroactive date", "retro date"]
+  terrorism: ["terrorism", "tria"]
+  cancellation_notice: ["days notice of cancellation", "days' notice", "days notice"]
+  midterm_change_titles: ["policy change", "change endorsement", "endorsement no", "amended declarations", "revised declarations", "policy change endorsement"]
+
+# words masked before comparing the text of the same form on both sides (so date / number roll-overs are not "wording changes")
+wording_mask:
+  - '\b\d{1,2}/\d{1,2}/\d{2,4}\b'
+  - '\b\d{4}-\d{2}-\d{2}\b'
+  - '\bpage \d+ of \d+\b'
+  - '\b(19|20)\d{2}\b'

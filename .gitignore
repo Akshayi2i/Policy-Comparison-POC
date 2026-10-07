@@ -1,0 +1,12 @@
+# secrets — never commit (API keys live here)
+.env
+poc4_project.zip
+
+# local environment and generated files
+.venv/
+output/
+__pycache__/
+*.pyc
+.pytest_cache/
+policy_compare/render/static/fonts/_static/
+tests/scenarios/

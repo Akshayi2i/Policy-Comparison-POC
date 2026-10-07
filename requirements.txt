@@ -1,0 +1,25 @@
+# Exact versions the engine was built and tested with (Python 3.11, Windows 11).
+# Pinned on purpose:
+#   - playwright 1.47.0 uses Chromium build 1134, the build the PDF layout was matched against
+#   - greenlet 3.0.3 is the build Windows Application Control allows on this machine (3.5.x is blocked)
+#   - openai 2.x / pydantic 2.9 / fastapi 0.115 are the versions the tests run against
+
+# core
+pydantic==2.9.2
+pydantic-settings==2.5.2
+pyyaml==6.0.3
+jinja2==3.1.4
+openai==2.51.0
+# PDF rendering (run once after install: python -m playwright install chromium)
+playwright==1.47.0
+greenlet==3.0.3
+pymupdf==1.28.2
+fonttools==4.63.0
+brotli==1.2.0
+# API
+fastapi==0.115.0
+uvicorn==0.30.6
+python-multipart==0.0.9
+httpx==0.27.2
+# tests
+pytest==8.3.3

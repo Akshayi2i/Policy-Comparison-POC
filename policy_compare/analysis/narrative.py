@@ -14,8 +14,11 @@ SECTION_TITLES = {
     "terms": "Coverage Terms and Conditions", "forms": "Endorsements and Forms",
     "midterm": "Mid-term Changes on the Expiring Policy", "checklist": "Contract Requirements and Broker Checklist",
     "focus": "Client Focus Areas", "pending": "Items Pending Confirmation with the Carrier",
+    "observations": "Coverage Observations (No Change at Renewal)",
 }
-SECTION_ORDER = ["policy", "premium", "limits", "terms", "forms", "midterm", "checklist", "focus", "pending"]
+SECTION_ORDER = ["policy", "premium", "limits", "terms", "forms", "midterm", "checklist", "focus", "pending", "observations"]
+# sections whose rows describe changes (observations describe existing terms, so they never count as changes)
+CHANGE_SECTIONS = SECTION_ORDER[:-1]
 PRIMARY = {"policy", "premium", "limits", "terms", "forms", "midterm", "checklist"}
 LEVELS = ["low", "medium", "high"]
 
@@ -117,6 +120,12 @@ def default_section(section: str, rows: list[Finding], ctx: dict) -> SectionNarr
         headline = "No mid-term changes were found on the expiring policy."
     elif section == "pending" and not rows:
         headline = "Nothing is waiting on the carrier."
+    elif section == "observations" and not rows:
+        headline = ("No coverage observations were raised for this client." if ctx.get("observations_ran")
+                    else "Coverage observations need the model; none were produced in this run.")
+    elif section == "observations":
+        headline = _sentence("Unchanged terms to discuss with the client: " +
+                             "; ".join(r.label[:1].lower() + r.label[1:] for r in rows[:3]))
     elif not changed:
         headline = f"No changes found in {name}."
     elif not material:
@@ -149,6 +158,9 @@ def default_section(section: str, rows: list[Finding], ctx: dict) -> SectionNarr
     else:
         stmt = "Nothing in this section reduces the client's cover."
 
+    if section == "observations":
+        stmt = ("These terms did not change at renewal, but they leave gaps worth discussing with the client."
+                if rows else "Nothing in this section changes at renewal.")
     conf, reason = default_confidence(section, rows, ctx)
     return SectionNarrative(headline=headline, bullets=bullets, takeaway=headline, risk_level=level, risk_statement=stmt,
                             confidence=conf, confidence_reason=reason)
@@ -191,7 +203,8 @@ def default_critical(f: Finding, deadline: str) -> CriticalNarrative:
         title, theme = "Now non-admitted (surplus lines)", themes.get("admitted", "market")
     elif f.kind.startswith("form_"):
         num = f.context.get("form_number", f.label)
-        title = f"{num} {'removed' if f.kind == 'form_removed' else 'added' if f.kind == 'form_added' else 'changed'}"
+        title = f"{num} replaced by {f.context.get('renewal_form_number')}" if f.kind == "form_replaced" else \
+            f"{num} {'removed' if f.kind == 'form_removed' else 'added' if f.kind == 'form_added' else 'changed'}"
         theme = themes.get("form_contract_slot") if f.context.get("contract_slots") else themes.get(f.kind, "scope")
     else:
         verb = "changed"

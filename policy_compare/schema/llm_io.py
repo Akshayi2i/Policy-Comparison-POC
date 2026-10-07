@@ -88,3 +88,77 @@ class MidtermChange(BaseModel):
 
 class MidtermExtraction(BaseModel):
     changes: list[MidtermChange]
+
+
+# ---------- A: coverage observations (unchanged forms that matter for this client) ----------
+class ObservationItem(BaseModel):
+    form_number: str
+    concern: str
+    why: str
+    recommendation: str
+    severity: Severity
+    quote: str
+
+
+class ObservationSet(SectionText):
+    observations: list[ObservationItem]
+
+
+# ---------- C: contract requirements read from the form wording ----------
+class SlotVerdict(BaseModel):
+    slot: str
+    status: Literal["met", "partial", "not_found"]
+    form_number: Optional[str]
+    quote: Optional[str]
+    note: str
+
+
+class SlotAssessment(BaseModel):
+    verdicts: list[SlotVerdict]
+
+
+# ---------- D: ready-to-send drafts ----------
+class DraftMessage(BaseModel):
+    subject: str
+    body: str
+
+
+class Drafts(BaseModel):
+    carrier_email: DraftMessage
+    client_letter: DraftMessage
+
+
+# ---------- E: questions about the two policies ----------
+class QACitation(BaseModel):
+    side: Literal["expiring", "renewal"]
+    quote: str
+
+
+class QAAnswer(BaseModel):
+    answer: str
+    citations: list[QACitation]
+    confidence: Level
+
+
+# ---------- G: second-pass check of the model's own narrative ----------
+class JudgeIssue(BaseModel):
+    id: str
+    reason: str
+
+
+class JudgeResult(BaseModel):
+    unsupported: list[JudgeIssue]
+
+
+# ---------- B: cross-carrier form equivalence ----------
+class FormPair(BaseModel):
+    removed_id: str
+    added_id: str
+    relation: Literal["equivalent", "narrower", "broader"]
+    reason: str
+    expiring_quote: str
+    renewal_quote: str
+
+
+class FormPairing(BaseModel):
+    pairs: list[FormPair]

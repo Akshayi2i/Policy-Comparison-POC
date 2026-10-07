@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Optional
 
 from policy_compare.analysis.narrative import (
-    SECTION_ORDER, Narratives, default_critical, default_exec, default_section,
+    CHANGE_SECTIONS, SECTION_ORDER, Narratives, default_critical, default_exec, default_section,
 )
 from policy_compare.diff import Ids, compare_elements, expected_missing, policy_level
 from policy_compare.findings import IMPACT_RANK, SEVERITY_RANK, Finding
@@ -40,6 +40,7 @@ class Analysis:
     narratives: Narratives = field(default_factory=Narratives)
     warnings: list[str] = field(default_factory=list)
     audit: dict = field(default_factory=dict)
+    drafts: Optional[object] = None          # ReportDrafts
 
     @property
     def deadline(self) -> str:
@@ -51,7 +52,7 @@ class Analysis:
     def unique_changes(self) -> list[Finding]:
         """One finding per change_key (the most severe), across all sections — the executive 'changes found'."""
         best: dict[str, Finding] = {}
-        for f in self.all_findings():
+        for f in (f for s in CHANGE_SECTIONS for f in self.findings.get(s, [])):   # observations are not changes
             if not f.changed:
                 continue
             cur = best.get(f.change_key)
@@ -74,10 +75,11 @@ class Analysis:
         return None
 
 
-def analyse(a: str | Path | dict, b: str | Path | dict, focus: Optional[list[str]] = None, use_llm: Optional[bool] = None) -> Analysis:
+def analyse(a: str | Path | dict, b: str | Path | dict, focus: Optional[list[str]] = None, use_llm: Optional[bool] = None,
+            pdfs: Optional[list] = None) -> Analysis:
+    """pdfs: optional original policy PDFs, used only to read scanned pages with a vision model."""
     t0 = time.time()
     E, R, warnings = load_pair(a, b)
-    ti_e, ti_r = TextIndex(E), TextIndex(R)
     ids = Ids()
     llm = None
     want_llm = settings().llm_enabled if use_llm is None else (use_llm and settings().llm_enabled)
@@ -86,6 +88,11 @@ def analyse(a: str | Path | dict, b: str | Path | dict, focus: Optional[list[str
     if want_llm:
         from policy_compare.llm.client import LLMClient
         llm = LLMClient()
+    ocr = {}
+    if llm and settings().vision_enabled:            # F: scanned pages become text before anything reads them
+        from policy_compare.ocr import run_ocr
+        ocr = run_ocr(llm, [E, R], pdfs or [], warnings)
+    ti_e, ti_r = TextIndex(E), TextIndex(R)
 
     e_el, r_el, unmatched, unaligned = flatten_pair(E.data, R.data)
     if unaligned:
@@ -112,41 +119,56 @@ def analyse(a: str | Path | dict, b: str | Path | dict, focus: Optional[list[str
                   fe=fe, fr=fr, focus=[], topics_supplied=supplied, warnings=warnings)
 
     # model: classify / explain section rows before the cross-reference sections are derived from them
+    evidence: dict = {}
     if llm:
+        from policy_compare.analysis.equivalence import match_equivalents
+        match_equivalents(llm, an)                    # B: removed + added forms that are one replacement
         from policy_compare.analysis.assess import assess_sections
+        from policy_compare.analysis.slots import assess_slots
         assess_sections(llm, an)
+        evidence = assess_slots(llm, an)              # C: contract requirements from the form wording
     if not topics:
         if llm:
             from policy_compare.analysis.assess import pick_topics
             topics = pick_topics(llm, an)
         topics = topics or default_topics(an.all_findings())
     base = [f for s in ("policy", "premium", "limits", "terms", "forms", "midterm") for f in by_section[s]]
-    by_section["checklist"] = checklist(E, R, fe, fr, base, by_section["midterm"], ti_e, ti_r, ids)
+    by_section["checklist"] = checklist(E, R, fe, fr, base, by_section["midterm"], ti_e, ti_r, ids, evidence=evidence)
     an.focus = focus_topics(topics, base, ti_e, ti_r)
     by_section["focus"] = [_focus_finding(t, ids) for t in an.focus]
     by_section["pending"] = pending(base, ids)
+    if llm:                                           # A: coverage observations (unchanged terms that matter)
+        from policy_compare.analysis.observe import observe
+        by_section["observations"] = observe(llm, an, ids)
 
     # narratives: defaults first, the model overrides validated pieces
     ctx = narrative_context(an)
     for s in SECTION_ORDER:
         if s not in an.narratives.sections:          # model text (if any) already set for the value sections
-            an.narratives.sections[s] = default_section(s, by_section[s], {**ctx, "topics": topics})
+            an.narratives.sections[s] = default_section(s, by_section[s], {**ctx, "topics": topics,
+                                                                           "observations_ran": an.audit.get("observations_ran", False)})
     crit = an.critical_candidates()[: config("rubric")["critical_changes"]["max_items"]]
     for f in crit:
         an.narratives.critical[f.id] = default_critical(f, an.deadline)
     an.narratives.critical_order = [f.id for f in crit]
     an.narratives.executive = default_exec(an.narratives.sections, an.unique_changes(), crit, an.premium(), an.deadline)
     if llm:
+        from policy_compare.analysis.judge import judge
         from policy_compare.analysis.synthesize import synthesize
         synthesize(llm, an, ctx)
+        if settings().llm_judge:
+            judge(llm, an)                            # G: second pass over the model's own statements
     from policy_compare.analysis.guards import apply_guards
     apply_guards(an)
+    from policy_compare.analysis.drafts import build_drafts
+    an.drafts = build_drafts(an, llm)                 # D: carrier email + client letter
 
     an.audit.update({
         "expiring": E.file_name, "renewal": R.file_name, "llm": bool(llm),
         "model": settings().llm_model if llm else None, "elapsed_s": round(time.time() - t0, 1),
         "unmatched_paths": [u.pattern for u in unmatched], "topics": topics,
         "llm_calls": llm.calls if llm else [], "warnings": warnings,
+        "ocr_pages": ocr, "vision": bool(llm and settings().vision_enabled),
     })
     return an
 

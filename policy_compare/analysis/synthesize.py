@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING
 
-from policy_compare.analysis.guards import allowed_numbers, clean_text
+from policy_compare.analysis.guards import TextGate
 from policy_compare.analysis.narrative import (
     SECTION_TITLES, CriticalNarrative, ExecNarrative, SectionNarrative, default_critical, default_section,
 )
@@ -41,6 +41,13 @@ def synthesize(llm: LLMClient, an: "Analysis", ctx: dict) -> None:
     if prem:
         context["premium"] = {"expiring": money(prem[0]), "renewal": money(prem[1]), "change": money(prem[1] - prem[0])}
     context["expiry_deadline"] = an.deadline
+    context["form_changes"] = [{"form": f.label, "change": f.change, "form_role": f.context.get("form_role"),
+                                "related_forms_still_on_renewal": f.context.get("related_forms_still_on_renewal"),
+                                "related_forms_on_expiring": f.context.get("related_forms_on_expiring"),
+                                "replaced_by": f.context.get("replaced_by")}
+                               for f in an.findings["forms"] if f.changed]
+    context["forms_on_both_policies"] = [f"{f.number} — {f.title}" for k, f in an.fr.items() if k in an.fe]
+    context["coverage_observations_no_change"] = [f"{f.label} ({f.sublabel})" for f in an.findings.get("observations", [])]
     user = prompt("synthesis").format(
         insured=an.R.insured or an.E.insured, context=_dump(context), sections=_dump(sections),
         changes=_dump([{"id": f.id, "label": f.label, "change": f.change, "impact": f.impact, "severity": f.severity,
@@ -53,15 +60,20 @@ def synthesize(llm: LLMClient, an: "Analysis", ctx: dict) -> None:
     except LLMError as e:
         an.warnings.append(f"model synthesis failed; executive summary uses rule-based text ({e})")
         return
-    allowed = allowed_numbers(an)
+    gate = TextGate(an)
+    before = len(an.audit.get("rejected_text", []))
 
     # executive
+    nr = not any(f.impact == "reduced" for f in unique)
     d = an.narratives.executive
     an.narratives.executive = ExecNarrative(
         risk=res.risk, confidence=res.confidence,
-        lead=clean_text(res.lead, max_words=16, allowed=allowed) or d.lead,
-        body=clean_text(res.body, max_words=70, allowed=allowed, forbid=["critical change"]) or d.body,
-        confidence_note=clean_text(res.confidence_note, max_words=40, allowed=allowed) or d.confidence_note, source="model")
+        lead=gate.take("executive lead", res.lead, 16, kind="headline", no_reduction=nr) or d.lead,
+        body=gate.take("executive body", res.body, 70, forbid=["critical change"], no_reduction=nr) or d.body,
+        confidence_note=gate.take("executive confidence note", res.confidence_note, 40) or d.confidence_note, source="model")
+    if any(r["reason"].startswith("contradicts") for r in an.audit.get("rejected_text", [])[before:]):
+        an.narratives.executive.risk, an.narratives.executive.confidence = d.risk, d.confidence
+        an.audit.setdefault("guards", []).append("executive: model text contradicted the facts; rule-based risk used")
 
     # critical ranking: only real candidates; every critical-severity candidate kept; severity tiers enforced
     by_id = {f.id: f for f in cands}
@@ -72,9 +84,9 @@ def synthesize(llm: LLMClient, an: "Analysis", ctx: dict) -> None:
             continue
         dflt = default_critical(f, an.deadline)
         an.narratives.critical[item.id] = CriticalNarrative(
-            title=clean_text(item.title, max_words=8, allowed=allowed) or dflt.title, theme=item.theme,
-            description=clean_text(item.description, max_words=18, allowed=allowed) or dflt.description,
-            next_step=clean_text(item.next_step, max_words=18, allowed=allowed) or dflt.next_step, source="model")
+            title=gate.take(f"critical {f.label} title", item.title, 8) or dflt.title, theme=item.theme,
+            description=gate.take(f"critical {f.label} description", item.description, 18) or dflt.description,
+            next_step=gate.take(f"critical {f.label} next step", item.next_step, 18) or dflt.next_step, source="model")
         chosen.append(item.id)
     for f in cands:
         if f.severity == "critical" and f.id not in chosen:
@@ -83,16 +95,10 @@ def synthesize(llm: LLMClient, an: "Analysis", ctx: dict) -> None:
     chosen.sort(key=lambda i: SEVERITY_RANK[by_id[i].severity])
     an.narratives.critical_order = chosen[:max_items]
 
-    # cross-reference sections
+    # cross-reference sections (same gate and fallback rules as the value sections)
+    from policy_compare.analysis.assess import section_from
     for s, txt in (("checklist", res.checklist), ("focus", res.focus), ("pending", res.pending)):
-        dflt = default_section(s, an.findings[s], {**ctx, "topics": [t.topic for t in an.focus]})
-        bullets = [b for b in (clean_text(x, max_words=18, allowed=allowed) for x in txt.bullets[:3]) if b]
-        an.narratives.sections[s] = SectionNarrative(
-            headline=clean_text(txt.headline, max_words=30, allowed=allowed) or dflt.headline, bullets=bullets or dflt.bullets,
-            takeaway=clean_text(txt.takeaway, max_words=25, allowed=allowed) or dflt.takeaway, risk_level=txt.risk_level,
-            risk_statement=clean_text(txt.risk_statement, max_words=36, allowed=allowed) or dflt.risk_statement,
-            confidence=txt.confidence, confidence_reason=clean_text(txt.confidence_reason, max_words=36, allowed=allowed) or dflt.confidence_reason,
-            source="model")
+        an.narratives.sections[s] = section_from(txt, s, an.findings[s], an, gate)
 
     # focus quotes: indexes must point at real candidate sentences
     topics = {t.topic: t for t in an.focus}

@@ -310,3 +310,25 @@ def expected_missing(section: str, e_el: dict[str, Element], r_el: dict[str, Ele
         if not found:
             out.append(item["label"])
     return out
+
+
+def expected_status(section: str, an) -> tuple[list[str], list[str]]:
+    """(labels missing everywhere, 'label — form' notes for items not on the declarations but provided by a form)."""
+    missing, via_form = [], []
+    items = {i["label"]: i for i in config("catalogue").get("expected", {}).get(section, [])}
+    for label in expected_missing(section, an.e_el, an.r_el):
+        words = [w.lower() for w in items.get(label, {}).get("forms_any", [])]
+        hits = {}
+        for side, forms in (("expiring", an.fe), ("renewal", an.fr)):
+            for f in forms.values():
+                if any(w in f.title.lower() for w in words):
+                    hits.setdefault(f.number, (f, set()))[1].add(side)
+        if hits:
+            parts = []
+            for num, (f, sides) in hits.items():
+                where = "both policies" if len(sides) == 2 else f"{next(iter(sides))} only"
+                parts.append(f"{num} {f.title} ({where})")
+            via_form.append(f"{label} — {'; '.join(parts)}")
+        else:
+            missing.append(label)
+    return missing, via_form

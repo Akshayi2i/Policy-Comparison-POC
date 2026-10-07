@@ -89,16 +89,17 @@ rules:
   - {match: "**.*limit*",                         section: limits,  type: limit}
   - {match: "**.limit",                           section: limits,  type: limit}
 
-# expected elements: when present in neither policy they are listed in the section footnote
-# "Not shown on either declarations page". Each entry: label + path patterns that would satisfy it.
+# expected elements: when present in neither policy's declarations they are listed in the section footnote
+# "Not shown on either declarations page" — unless a form title matches `forms_any`, in which case the footnote
+# names the form instead. Each entry: label + path patterns that would satisfy it.
 expected:
   premium:
-    - {label: "Liability Deductible / SIR", any: ["**.*liability*deductible*", "**.*sir*", "**.*self_insured*"]}
-    - {label: "Wind / Hail Deductible", any: ["**.*wind*", "**.*hail*"]}
+    - {label: "Liability Deductible / SIR", any: ["**.*liability*deductible*", "**.*sir*", "**.*self_insured*"], forms_any: ["self-insured retention", "liability deductible"]}
+    - {label: "Wind / Hail Deductible", any: ["**.*wind*", "**.*hail*"], forms_any: ["windstorm", "wind or hail", "wind/hail"]}
   limits:
-    - {label: "Business Income / Extra Expense", any: ["**.*business_income*", "**.*extra_expense*", "**.*loss_of_income*"]}
+    - {label: "Business Income / Extra Expense", any: ["**.*business_income*", "**.*extra_expense*", "**.*loss_of_income*"], forms_any: ["business income", "extra expense", "loss of income"]}
   terms:
-    - {label: "Coinsurance", any: ["**.*coinsurance*"]}
+    - {label: "Coinsurance", any: ["**.*coinsurance*"], forms_any: ["coinsurance"]}
 
 # coverage parts (lines of business): a top-level container counts as present when it holds any real value
 coverage_parts:

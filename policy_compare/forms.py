@@ -92,6 +92,35 @@ def _words_in(title: str, words: list[str]) -> bool:
     return any(re.search(r"\b" + re.escape(w) + r"\b", t) for w in words)
 
 
+TITLE_STOP = {"form", "forms", "policy", "coverage", "coverages", "endorsement", "endorsements", "important",
+              "the", "and", "with", "under", "than", "more", "other", "for", "from", "this"}
+
+
+def title_words(title: str) -> set[str]:
+    """Significant words of a form title, singularised ('Exclusions' -> 'exclusion')."""
+    words = set()
+    for w in re.findall(r"[a-z][a-z\-]+", (title or "").lower()):
+        w = w[:-1] if len(w) > 4 and w.endswith("s") and not w.endswith("ss") else w
+        if len(w) >= 4 and w not in TITLE_STOP:
+            words.add(w)
+    return words
+
+
+def related_forms(form: Form, others: dict[str, Form], exclude: set[str]) -> list[str]:
+    """Forms on the other policy that cover the same subject (two or more significant title words in common)."""
+    mine = title_words(form.title)
+    hits = [(len(mine & title_words(o.title)), o) for k, o in others.items() if k not in exclude and k != form.key]
+    return [f"{o.number} — {o.title}" for n, o in sorted(hits, key=lambda x: -x[0]) if n >= 2][:4]
+
+
+def form_role(form: Form, rub: dict) -> str:
+    if _words_in(form.title, rub["notice_words"]):
+        return "notice or disclosure (informational; does not by itself change cover)"
+    if _words_in(form.title, rub["exclusion_words"]):
+        return "exclusion or limitation (narrows cover)"
+    return "coverage, condition or amendatory form"
+
+
 def compare_forms(E: Side, R: Side, ti_e: TextIndex, ti_r: TextIndex, ids: Ids) -> tuple[list[Finding], list[Form], dict, dict]:
     """Returns (findings, unchanged forms, expiring forms, renewal forms)."""
     rub = config("rubric")["forms"]
@@ -115,7 +144,9 @@ def compare_forms(E: Side, R: Side, ti_e: TextIndex, ti_r: TextIndex, ids: Ids) 
                            group="removed", exp=f.display, ren="Not on policy", exp_ref=_ref(E, f.page), change="Removed at renewal",
                            impact=r["impact"], severity=r["severity"], locked=locked, why=why("form_removed"),
                            explain_label="What it does", type="form",
-                           context={"form_number": f.number, "title": f.title, "contract_slots": f.slots,
+                           context={"form_number": f.number, "title": f.title, "form_role": form_role(f, rub),
+                                    "contract_slots": f.slots,
+                                    "related_forms_still_on_renewal": related_forms(f, fr, exclude=set()),
                                     "form_text_excerpt": _excerpt(ti_e, f.doc)}))
     for key, f in fr.items():
         if key in fe:
@@ -131,7 +162,9 @@ def compare_forms(E: Side, R: Side, ti_e: TextIndex, ti_r: TextIndex, ids: Ids) 
                            group="added", exp="Not on policy", ren=f.display, ren_ref=_ref(R, f.page), change="Added on renewal",
                            impact=r["impact"], severity=r["severity"], locked=locked, why=why("form_added"),
                            explain_label="What it does", type="form",
-                           context={"form_number": f.number, "title": f.title, "contract_slots": f.slots,
+                           context={"form_number": f.number, "title": f.title, "form_role": form_role(f, rub),
+                                    "contract_slots": f.slots,
+                                    "related_forms_on_expiring": related_forms(f, fe, exclude=set()),
                                     "form_text_excerpt": _excerpt(ti_r, f.doc)}))
     for key, a in fe.items():
         b = fr.get(key)

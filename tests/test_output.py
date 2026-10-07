@@ -42,3 +42,22 @@ def test_cli_and_api_save_into_output(tmp_output):
         r = TestClient(app).post("/compare", files={"policy_a": a, "policy_b": b}, data={"llm": "false"})
     assert r.status_code == 200 and r.headers["x-saved-to"].endswith(f"{stem}.pdf")
     assert (tmp_output / f"{stem}.pdf").exists()
+    assert (tmp_output / f"{stem}.carrier_email.txt").exists() and (tmp_output / f"{stem}.client_letter.txt").exists()
+
+
+def test_ask_cli_and_api(capsys):
+    from fastapi.testclient import TestClient
+
+    from policy_compare.__main__ import main
+    from policy_compare.api import app
+
+    assert main(["--a", str(POLICY_1), "--b", str(POLICY_2), "--no-llm", "--ask", "snow removal operations"]) == 0
+    out = capsys.readouterr().out
+    assert "retrieval only" in out and "passage  : [" in out
+
+    with open(POLICY_1, "rb") as a, open(POLICY_2, "rb") as b:
+        r = TestClient(app).post("/ask", files={"policy_a": a, "policy_b": b},
+                                 data={"question": "Is snow removal excluded?", "llm": "false"})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["verified"] is False and any("snow" in p["text"].lower() for p in body["passages"])

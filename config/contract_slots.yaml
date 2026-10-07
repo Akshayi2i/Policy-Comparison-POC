@@ -7,22 +7,27 @@ slots:
     forms: ["CG 20 10", "CG 20 26", "CG 20 33", "CG 20 38"]
     title_any: [["additional insured"], ["blanket", "additional insured"]]
     exclude_title: ["completed operations"]
+    text_any: ["additional insured"]
   - id: ai_completed
     label: "Additional insured - completed operations"
     forms: ["CG 20 37", "CG 20 39", "CG 20 40"]
     title_any: [["additional insured", "completed operations"]]
+    text_any: ["completed operations", "products-completed operations hazard", "your work"]
   - id: primary_noncontributory
     label: "Primary & noncontributory"
     forms: ["CG 20 01"]
     title_any: [["primary", "noncontributory"], ["primary", "non-contributory"]]
+    text_any: ["noncontributory", "non-contributory", "primary basis"]
   - id: waiver_subrogation
     label: "Waiver of subrogation"
     forms: ["CG 24 04"]
     title_any: [["waiver", "subrogation"], ["waiver of transfer of rights"]]
+    text_any: ["subrogation", "transfer of rights of recovery", "waive"]
   - id: per_project_aggregate
     label: "Per project / per location aggregate"
     forms: ["CG 25 03", "CG 25 04"]
     title_any: [["designated construction project"], ["per project"], ["per location", "aggregate"], ["designated location", "aggregate"]]
+    text_any: ["per project", "designated construction project", "per location"]
 
 broker_checks:
   - id: claims_made_continuity

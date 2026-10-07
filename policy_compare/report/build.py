@@ -6,7 +6,7 @@ from datetime import date
 from typing import Optional
 
 from policy_compare.analysis.narrative import SECTION_ORDER, SECTION_TITLES
-from policy_compare.diff import expected_missing
+from policy_compare.diff import expected_status
 from policy_compare.engine import Analysis
 from policy_compare.findings import IMPACT_RANK, SEVERITY_RANK, Finding
 from policy_compare.fmt import long_date, mdy, money, money_compact, pct, plural
@@ -27,7 +27,8 @@ COLUMNS = {
     "checklist": ["Check", "Expiring", "Renewal", "Change / Assessment"],
     "pending": ["Item", "Expiring", "Renewal", "Next step"],
 }
-FORM_GROUPS = [("removed", "Forms removed", "on expiring, not on renewal"), ("added", "Forms added", "new on renewal"),
+FORM_GROUPS = [("replaced", "Forms replaced", "different form number, same purpose"),
+               ("removed", "Forms removed", "on expiring, not on renewal"), ("added", "Forms added", "new on renewal"),
                ("edition", "Edition changes", None), ("wording", "Wording changes", "same form, different text")]
 MAX_UNCHANGED_LIST = 14
 
@@ -82,9 +83,11 @@ def _value_blocks(an: Analysis, section: str) -> list:
         names = list(dict.fromkeys(names))
         shown = ", ".join(names[:MAX_UNCHANGED_LIST]) + (f" and {len(names) - MAX_UNCHANGED_LIST} more" if len(names) > MAX_UNCHANGED_LIST else "")
         notes.append(f"**Also unchanged:** {shown}.")
-    missing = expected_missing(section, an.e_el, an.r_el)
+    missing, via_form = expected_status(section, an)
     if missing:
         notes.append(f"Not shown on either declarations page (may be set by the policy forms): {', '.join(missing)}.")
+    if via_form:
+        notes.append(f"Not on the declarations but provided by form: {'; '.join(via_form)}.")
     if not blocks and not notes:
         blocks.append(NoteBlock(text="No values in this section were found on either policy."))
     if notes:
@@ -164,11 +167,22 @@ def _checklist_blocks(an: Analysis) -> list:
     return [TableBlock(columns=COLUMNS["checklist"], rows=[row(f) for f in an.findings["checklist"]])]
 
 
+def _observation_blocks(an: Analysis) -> list:
+    rows = an.findings.get("observations", [])
+    if not rows:
+        ran = an.audit.get("observations_ran")
+        return [NoteBlock(text="No exclusions or limitations on both policies were flagged for this client." if ran else
+                          "Coverage observations are written by the model, which was not used for this report.")]
+    return [TableBlock(intro="These terms did not change at renewal; they are listed because they matter for this client's "
+                             "operations. Each is quoted from the renewal form.",
+                       columns=["Observation", "Expiring", "Renewal", "Recommendation"], rows=[row(f) for f in rows])]
+
+
 BUILDERS = {
     "policy": lambda an: _value_blocks(an, "policy"), "premium": lambda an: _value_blocks(an, "premium"),
     "limits": lambda an: _value_blocks(an, "limits"), "terms": lambda an: _value_blocks(an, "terms"),
     "forms": _forms_blocks, "midterm": _midterm_blocks, "checklist": _checklist_blocks,
-    "focus": _focus_blocks, "pending": _pending_blocks,
+    "focus": _focus_blocks, "pending": _pending_blocks, "observations": _observation_blocks,
 }
 
 
@@ -218,6 +232,7 @@ def build_report(an: Analysis, prepared_on: Optional[date] = None) -> Report:
         prem_kpi = Kpi(label="PREMIUM", value="—", sub="not stated on both policies")
     forms_added = sum(f.kind == "form_added" for f in an.findings["forms"])
     forms_removed = sum(f.kind == "form_removed" for f in an.findings["forms"])
+    forms_replaced = sum(f.kind == "form_replaced" for f in an.findings["forms"])
     ex = an.narratives.executive
     verdict = f"**{ex.lead}** {ex.body}"
     if n_items:
@@ -226,7 +241,7 @@ def build_report(an: Analysis, prepared_on: Optional[date] = None) -> Report:
         risk=ex.risk, confidence=ex.confidence, verdict=verdict, confidence_note=ex.confidence_note,
         kpis=[prem_kpi,
               Kpi(label="CRITICAL CHANGES", value=str(n_items), sub=f"act before {an.deadline}", accent=True),
-              Kpi(label="FORMS", value=f"+{forms_added} / −{forms_removed}", sub="added / removed"),
+              Kpi(label="FORMS", value=f"+{forms_added} / −{forms_removed}", sub="added / removed" + (f" · {forms_replaced} replaced" if forms_replaced else "")),
               Kpi(label="TO CONFIRM", value=str(len(an.findings["pending"])), sub="items with the carrier")],
         changes_total=len(unique), mix=mix)
 
@@ -251,7 +266,7 @@ def build_report(an: Analysis, prepared_on: Optional[date] = None) -> Report:
                   critical=CriticalSection(intro=intro, deadline=an.deadline, themes=theme_counts if items else [], items=items,
                                            improvements=improvements, empty_note=None if items else
                                            "No critical changes found — nothing on the renewal reduces cover at Critical or High severity."),
-                  overview=overview, sections=sections, sources=sources, audit=an.audit)
+                  overview=overview, sections=sections, sources=sources, drafts=an.drafts, audit=an.audit)
 
 
 def _crit_renewal(f: Finding) -> str:
@@ -275,6 +290,8 @@ def _count_word(n: int) -> str:
 
 
 def _how_read(side, ti) -> str:
+    if side.ocr_pages:
+        return f"Digital + {plural(len(side.ocr_pages), 'scanned page')} read by the vision model"
     scanned = len(ti.scanned_pages())
     base = "Digital text"
     return f"{base} + {plural(scanned, 'scanned page')}" if scanned else base

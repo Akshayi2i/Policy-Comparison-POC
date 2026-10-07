@@ -207,6 +207,18 @@ class Meta(BaseModel):
     )
 
 
+class DraftText(BaseModel):
+    subject: str
+    body: str
+
+
+class ReportDrafts(BaseModel):
+    """Ready-to-send texts (not printed in the PDF; saved next to it and returned by the API)."""
+    carrier_email: DraftText
+    client_letter: DraftText
+    source: str = "default"   # default | model
+
+
 class Report(BaseModel):
     meta: Meta
     cover: Cover
@@ -215,4 +227,5 @@ class Report(BaseModel):
     overview: list[OverviewRow]
     sections: list[Section]
     sources: list[SourceDoc]
+    drafts: Optional[ReportDrafts] = None
     audit: dict = {}

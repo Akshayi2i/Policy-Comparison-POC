@@ -28,6 +28,16 @@ class LLMError(RuntimeError):
     pass
 
 
+def short_error(e: Exception) -> str:
+    """One line for logs: proxy HTML error pages become 'HTTP 502: Waiting for service to respond — RunPod'."""
+    text = str(e)
+    m = re.search(r"<title>(.*?)</title>", text, re.S | re.I)
+    status = getattr(e, "status_code", None)
+    if m:
+        return f"{'HTTP ' + str(status) + ': ' if status else ''}{m.group(1).strip()} (proxy error page; is the server/bridge on the pod up?)"
+    return re.sub(r"\s+", " ", text)[:300]
+
+
 def prompt(name: str) -> str:
     return (PROMPTS / f"{name}.md").read_text(encoding="utf-8")
 
@@ -111,16 +121,44 @@ class LLMClient:
                      "\nReturn only the corrected JSON object."}]
             except Exception as e:  # network / server errors: back off and retry
                 err = e
-                log.warning("%s: request failed (attempt %d): %s", task, attempt + 1, str(e)[:300])
+                log.warning("%s: request failed (attempt %d): %s", task, attempt + 1, short_error(e))
                 time.sleep(min(2 ** attempt, 8))
-        self.calls.append({"task": task, "ok": False, "error": str(err)[:300]})
-        raise LLMError(f"{task}: {err}")
+        msg = short_error(err) if isinstance(err, Exception) else str(err)
+        self.calls.append({"task": task, "ok": False, "error": msg})
+        raise LLMError(f"{task}: {msg}")
+
+    def vision_text(self, task: str, instruction: str, png: bytes, max_tokens: int = 2048) -> str:
+        """Plain-text answer about one image (used to transcribe scanned pages). Cached by image + instruction."""
+        import base64
+
+        key = hashlib.sha256(png + instruction.encode() + self.s.llm_model.encode()).hexdigest()[:32]
+        cache = self.s.llm_cache_dir / f"{task}-{key}.txt"
+        if cache.exists():
+            self.calls.append({"task": task, "cached": True, "ok": True})
+            return cache.read_text(encoding="utf-8")
+        content = [{"type": "text", "text": instruction},
+                   {"type": "image_url", "image_url": {"url": "data:image/png;base64," + base64.b64encode(png).decode()}}]
+        call = dict(model=self.s.llm_model, messages=[{"role": "user", "content": content}], temperature=0.0,
+                    max_tokens=max_tokens, stream=self.s.llm_stream)
+        err = None
+        for attempt in range(self.s.llm_retries):
+            t0 = time.time()
+            try:
+                text = self._send(call).strip()
+                cache.write_text(text, encoding="utf-8")
+                self.calls.append({"task": task, "ok": True, "seconds": round(time.time() - t0, 1)})
+                return text
+            except Exception as e:
+                err = e
+                time.sleep(min(2 ** attempt, 8))
+        self.calls.append({"task": task, "ok": False, "error": short_error(err)})
+        raise LLMError(f"{task}: {short_error(err)}")
 
     # ---------- transport ----------
     def _budget(self, messages: list[dict], schema: dict, wanted: int) -> int:
         """Output tokens that still fit the served context (prompt + output <= LLM_MAX_CONTEXT); vLLM rejects
         requests that do not. The prompt is estimated at ~3 characters per token, which errs on the safe side."""
-        prompt_chars = sum(len(m["content"]) for m in messages) + len(json.dumps(schema))
+        prompt_chars = sum(len(m["content"]) if isinstance(m["content"], str) else 2000 for m in messages) + len(json.dumps(schema))
         room = self.s.llm_max_context - prompt_chars // 3 - 256
         return max(512, min(wanted, room))
 

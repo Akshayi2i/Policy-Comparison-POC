@@ -101,6 +101,7 @@ next_step_templates:
   form_added: "Read {label} and confirm it was requested."
   form_edition: "Compare the {label} editions before presenting."
   form_wording: "Read the changed wording in {label}."
+  form_replaced: "Compare {label} with its replacement before presenting."
   value_reduced: "Ask the underwriter to restore the expiring {label}."
   deductible_reduced: "Ask the underwriter to remove or lower the new {label}."
   value_confirm: "Confirm {label} with the carrier."
@@ -114,6 +115,7 @@ themes:
   insurer: market
   form_removed: scope
   form_added: scope
+  form_replaced: scope
   form_contract_slot: contracts
   limits: limits
   premium: scope

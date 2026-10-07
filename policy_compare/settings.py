@@ -27,6 +27,12 @@ class Settings(BaseSettings):
     llm_stream: bool = True
     llm_structured: str = "json_schema"  # json_schema | guided_json | none
     llm_cache_dir: Path = ROOT / "output" / ".llm_cache"
+    # G: second pass over the model's own statements (only ever reverts to rule-based text)
+    llm_judge: bool = True
+    # F: read scanned pages with a vision model. auto = on when the model name contains "VL"
+    llm_vision: str = "auto"
+    ocr_max_pages: int = 15
+    source_pdf_dir: Optional[Path] = None      # folder with the original policy PDFs (matched by file name / sha256)
 
     config_dir: Path = ROOT / "config"
     output_dir: Path = ROOT / "output"     # every report (PDF + report JSON) is saved here
@@ -34,6 +40,11 @@ class Settings(BaseSettings):
     @property
     def llm_enabled(self) -> bool:
         return bool(self.llm_base_url)
+
+    @property
+    def vision_enabled(self) -> bool:
+        v = (self.llm_vision or "auto").lower()
+        return self.llm_enabled and (v == "true" or (v == "auto" and "vl" in self.llm_model.lower()))
 
 
 @lru_cache(maxsize=None)

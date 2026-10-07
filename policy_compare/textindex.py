@@ -13,6 +13,17 @@ def norm_space(s: str) -> str:
     return re.sub(r"\s+", " ", s or "").strip()
 
 
+MIN_QUOTE_WORDS = 4
+
+
+def quote_key(quote: str) -> str:
+    """A model quote as it must appear in the text: spaces normalised, outer quote marks dropped, and a leading or
+    trailing ellipsis removed (a quote cut short is checked as a verbatim part of the passage)."""
+    q = norm_space(quote).strip(" “”\"'")
+    q = re.sub(r"^(\.\.\.|…)\s*", "", q)
+    return re.sub(r"\s*(\.\.\.|…)$", "", q).strip(" “”\"'")
+
+
 def norm_key(s: str) -> str:
     """Lowercase alphanumerics only — used to compare labels and values loosely."""
     return re.sub(r"[^a-z0-9$%.]+", " ", (s or "").lower()).strip()
@@ -147,8 +158,12 @@ class TextIndex:
                         hits.append(Sentence(pg, norm_space(line)))
         return hits[:limit]
 
-    def contains_verbatim(self, quote: str) -> Optional[int]:
-        q = norm_space(quote).strip(" “”\"'")
+    def contains_verbatim(self, quote: str, min_words: int = 1) -> Optional[int]:
+        """First page whose text contains the quote. Model quotes pass min_words=MIN_QUOTE_WORDS so that a word or
+        two cannot count as a verified quote."""
+        q = quote_key(quote)
+        if len(q.split()) < min_words:
+            return None
         for pg, text in self.pages.items():
             if q and q in norm_space(text):
                 return pg

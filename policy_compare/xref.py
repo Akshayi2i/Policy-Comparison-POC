@@ -52,31 +52,52 @@ def midterm_findings(E: Side, ti_e: TextIndex, ids: Ids) -> list[Finding]:
 
 # ---------------- Section 9: contract requirements & broker checklist ----------------
 
+STATUS_RANK = {"not_found": 0, "partial": 1, "met": 2}
+
+
 def checklist(E: Side, R: Side, fe: dict[str, Form], fr: dict[str, Form], findings: list[Finding], midterm: list[Finding],
-              ti_e: TextIndex, ti_r: TextIndex, ids: Ids) -> list[Finding]:
+              ti_e: TextIndex, ti_r: TextIndex, ids: Ids, evidence: Optional[dict] = None) -> list[Finding]:
+    from policy_compare.analysis.slots import label_for, quote_note
     cfg = config("contract_slots")
     by_key = {f.change_key: f for f in findings}
+    evidence = evidence or {}
     out: list[Finding] = []
     for slot in cfg.get("slots", []):
-        se = [f for f in fe.values() if slot["id"] in f.slots]
-        sr = [f for f in fr.values() if slot["id"] in f.slots]
-        label = f"Contract requirement: {slot['label']}"
-        exp = "Yes - " + ", ".join(f.number for f in se) if se else "Not found"
-        ren = "Yes - " + ", ".join(f.number for f in sr) if sr else "Not found"
-        f = Finding(id=ids.next(), change_key=f"slot:{slot['id']}", section="checklist", kind="contract_slot", label=label,
-                    exp=exp, ren=ren, exp_ref=_ref(E, se[0].page) if se else None, ren_ref=_ref(R, sr[0].page) if sr else None,
-                    context={"slot": slot["id"], "expiring_forms": [x.full_title for x in se], "renewal_forms": [x.full_title for x in sr]})
-        if se and not sr:
-            f.impact, f.severity, f.locked, f.change, f.why = "reduced", "critical", True, "Lost on renewal", CONTRACT_WHY
-            f.duplicate_of = f"form:{se[0].key}" if f"form:{se[0].key}" in by_key else None
-        elif sr and not se:
-            f.impact, f.severity, f.locked, f.change = "improved", "medium", True, "Added on renewal"
+        sid = slot["id"]
+        se = [f for f in fe.values() if sid in f.slots]
+        sr = [f for f in fr.values() if sid in f.slots]
+        ev_e, ev_r = evidence.get("expiring", {}).get(sid), evidence.get("renewal", {}).get(sid)
+        st_e = ev_e.status if ev_e and ev_e.status != "not_found" else ("met" if se else "not_found")
+        st_r = ev_r.status if ev_r and ev_r.status != "not_found" else ("met" if sr else "not_found")
+        page_e = ev_e.page if ev_e and ev_e.page else (se[0].page if se else None)
+        page_r = ev_r.page if ev_r and ev_r.page else (sr[0].page if sr else None)
+        f = Finding(id=ids.next(), change_key=f"slot:{sid}", section="checklist", kind="contract_slot",
+                    label=f"Contract requirement: {slot['label']}",
+                    exp=label_for(ev_e, se), ren=label_for(ev_r, sr),
+                    exp_ref=_ref(E, page_e) if st_e != "not_found" else None,
+                    ren_ref=_ref(R, page_r) if st_r != "not_found" else None,
+                    sublabel=quote_note(ev_r, R.ref) or quote_note(ev_e, E.ref),
+                    context={"slot": sid, "expiring_forms": [x.full_title for x in se], "renewal_forms": [x.full_title for x in sr],
+                             "expiring_status": st_e, "renewal_status": st_r,
+                             "evidence_note": (ev_r.note if ev_r else None) or (ev_e.note if ev_e else None)})
+        re_, rr = STATUS_RANK[st_e], STATUS_RANK[st_r]
+        if rr < re_:
+            lost = rr == 0
+            f.impact, f.severity, f.locked = "reduced", "critical" if lost else "high", True
+            f.change = "Lost on renewal" if lost else "Narrower on renewal"
+            f.why = CONTRACT_WHY
+            if lost and se:
+                f.duplicate_of = f"form:{se[0].key}" if f"form:{se[0].key}" in by_key else None
+        elif rr > re_:
+            f.impact, f.severity, f.locked = "improved", "medium", True
+            f.change = "Added on renewal" if re_ == 0 else "Broader on renewal"
             f.why = "The renewal now meets this common contract requirement."
-            f.duplicate_of = f"form:{sr[0].key}" if f"form:{sr[0].key}" in by_key else None
-        elif not se and not sr:
+            if re_ == 0 and sr:
+                f.duplicate_of = f"form:{sr[0].key}" if f"form:{sr[0].key}" in by_key else None
+        elif re_ == 0:
             f.change = "Not on either policy"
         else:
-            f.change = "No change"
+            f.change = "No change" if st_e == "met" else "No change (partly met on both)"
         if f.duplicate_of:
             f.change_key = f.duplicate_of
         out.append(f)

@@ -17,6 +17,21 @@ import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 REJECT_JSON_SCHEMA = False
+# answer to image requests (scanned-page transcription); tests may replace it
+OCR_TEXT = ("MOCK TRANSCRIPTION OF A SCANNED PAGE. The insured must notify us of any claim within thirty days. "
+            "This text was read from the page image by the vision model.")
+
+
+def _text(content) -> str:
+    """Message content is a string, or a list of parts ({"type": "text"} / {"type": "image_url"})."""
+    if isinstance(content, list):
+        return "\n".join(p.get("text", "") for p in content if isinstance(p, dict) and p.get("type") == "text")
+    return content or ""
+
+
+def _has_image(messages: list) -> bool:
+    return any(isinstance(m.get("content"), list) and any(p.get("type") == "image_url" for p in m["content"])
+               for m in messages)
 
 
 def fake(schema: dict, prompt: str, path: str = ""):
@@ -76,11 +91,14 @@ class Handler(BaseHTTPRequestHandler):
             self._json({"error": {"message": "response_format json_schema not supported", "type": "BadRequestError"}}, 400)
             return
         schema = (rf.get("json_schema") or {}).get("schema") or body.get("guided_json")
-        prompt = "\n".join(m.get("content", "") for m in body.get("messages", []))
-        if schema is None:
-            m = re.search(r"JSON Schema:\n(\{.*\})\s*$", prompt, re.S)
-            schema = json.loads(m.group(1)) if m else {"type": "object", "properties": {}}
-        content = json.dumps(fake(schema, prompt))
+        prompt = "\n".join(_text(m.get("content")) for m in body.get("messages", []))
+        if _has_image(body.get("messages", [])) and schema is None:
+            content = OCR_TEXT
+        else:
+            if schema is None:
+                m = re.search(r"JSON Schema:\n(\{.*\})\s*$", prompt, re.S)
+                schema = json.loads(m.group(1)) if m else {"type": "object", "properties": {}}
+            content = json.dumps(fake(schema, prompt))
         if body.get("stream"):
             self.send_response(200)
             self.send_header("Content-Type", "text/event-stream")

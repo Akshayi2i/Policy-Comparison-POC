@@ -70,6 +70,7 @@ class Side:
     model: CanonicalPolicy
     path: Optional[Path] = None
     warnings: list[str] = field(default_factory=list)
+    ocr_pages: list[int] = field(default_factory=list)   # scanned pages read by the vision model
 
     @property
     def effective(self) -> Optional[date]:

@@ -6,7 +6,7 @@ from typing import Optional
 
 SECTION_NUMBERS = {
     "policy": "3", "premium": "4", "limits": "5", "terms": "6", "forms": "7",
-    "midterm": "8", "checklist": "9", "focus": "10", "pending": "11",
+    "midterm": "8", "checklist": "9", "focus": "10", "pending": "11", "observations": "12",
 }
 SEVERITY_RANK = {"critical": 0, "high": 1, "medium": 2, "low": 3}
 IMPACT_RANK = {"reduced": 0, "confirm": 1, "no_impact": 2, "improved": 3}
@@ -30,6 +30,7 @@ class Finding:
     locked: bool = False            # impact/severity fixed by the rubric; the model may only explain
     why: Optional[str] = None
     why_source: str = "template"    # template | model
+    why_default: Optional[str] = None  # rule-based explanation kept when the model's replaces it (for reverting)
     explain_label: str = "Why it matters"
     tag: Optional[str] = None
     sublabel: Optional[str] = None

@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 from policy_compare.analysis.guards import TextGate
 from policy_compare.diff import Ids
 from policy_compare.findings import SEVERITY_RANK, Finding
-from policy_compare.forms import form_role
+from policy_compare.forms import amended_by, form_role
 from policy_compare.llm.client import LLMClient, LLMError, prompt
 from policy_compare.schema.llm_io import ObservationSet
 from policy_compare.settings import config
@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 
 MAX_OBSERVATIONS = 6
 EXCERPT_CHARS = 700
+AMEND_CHARS = 500
 
 
 def candidate_forms(an: "Analysis") -> list:
@@ -48,7 +49,11 @@ def observe(llm: LLMClient, an: "Analysis", ids: Ids) -> list[Finding]:
         an.audit["observations_ran"] = True
         return []
     items = [{"form_number": f.number, "title": f.title,
-              "excerpt": norm_space(an.ti_r.document_text(f.doc))[:EXCERPT_CHARS]} for f in cands]
+              "excerpt": norm_space(an.ti_r.document_text(f.doc))[:EXCERPT_CHARS],
+              # endorsements on the same policy that name this form, e.g. a buy-back that gives part of the cover back
+              "amended_by": [{"form_number": o.number, "title": o.title,
+                              "excerpt": norm_space(an.ti_r.document_text(o.doc))[:AMEND_CHARS] if o.doc else ""}
+                             for o in amended_by(f, an.fr)]} for f in cands]
     user = prompt("observations").format(profile=json.dumps(client_profile(an), ensure_ascii=False, indent=1),
                                          forms=json.dumps(items, ensure_ascii=False, indent=1), max_items=MAX_OBSERVATIONS)
     try:
@@ -79,12 +84,14 @@ def observe(llm: LLMClient, an: "Analysis", ids: Ids) -> list[Finding]:
         quote = o.quote.strip().strip("“”\"")
         out.append(Finding(
             id=ids.next(), change_key=f"observe:{f.key}", section="observations", kind="observation",
-            label=concern.rstrip("."), sublabel=f"{f.number} — {f.title}",
+            label=concern.rstrip("."), sublabel=f"{f.number} — {f.title}" + "".join(
+                f"; amended by {o.number} — {o.title}" for o in amended_by(f, an.fr)),
             exp=an.fe[f.key].display, exp_ref=f"{an.E.ref} p.{an.fe[f.key].page}" if an.fe[f.key].page else None,
             ren=f.display, ren_ref=f"{an.R.ref} p.{f.page}" if f.page else None,
             change=rec, impact="confirm", severity=o.severity, locked=False,
             why=f"{why} “{quote}” [[{an.R.ref} p.{page}]]", why_source="model", type="observation",
             context={"form_number": f.number, "title": f.title, "quote": quote, "why_text": why,
+                     "amended_by": [o.full_title for o in amended_by(f, an.fr)],
                      "evidence": f"“{quote}” [[{an.R.ref} p.{page}]]"}))
         if len(out) >= MAX_OBSERVATIONS:
             break

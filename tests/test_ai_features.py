@@ -300,7 +300,7 @@ def test_judge_reverts_unsupported_statements(an):
 
     def answer(user):
         stmts = json.loads(user.split("STATEMENTS (JSON):", 1)[1].split("\n\nReturn", 1)[0])
-        return {"unsupported": [{"id": s["id"], "reason": "No form was added."} for s in stmts if "silica" in s["text"]]}
+        return {"unsupported": [{"id": s["id"], "contradicted_by": "F1", "reason": "No form was added."} for s in stmts if "silica" in s["text"]]}
 
     judge(StubLLM({"judge": answer}), an)
     assert n.headline == default_headline
@@ -354,7 +354,7 @@ def test_reverted_risk_statement_takes_its_level(an):
 
     def answer(user):
         stmts = json.loads(user.split("STATEMENTS (JSON):", 1)[1].split("\n\nReturn", 1)[0])
-        return {"unsupported": [{"id": s["id"], "reason": "No gap."} for s in stmts if "major gaps" in s["text"]]}
+        return {"unsupported": [{"id": s["id"], "contradicted_by": "F1", "reason": "No gap."} for s in stmts if "major gaps" in s["text"]]}
 
     judge(StubLLM({"judge": answer}), an)
     assert n.risk_level == default_level and n.risk_statement != "Removing these forms leaves major gaps."
@@ -374,7 +374,7 @@ def test_judge_cannot_delete_verified_observations(an):
 
     def answer(user):
         stmts = json.loads(user.split("STATEMENTS (JSON):", 1)[1].split("\n\nReturn", 1)[0])
-        return {"unsupported": [{"id": s["id"], "reason": "x"} for s in stmts if "subcontractors" in s["text"]]}
+        return {"unsupported": [{"id": s["id"], "contradicted_by": "F1", "reason": "x"} for s in stmts if "subcontractors" in s["text"]]}
 
     judge(StubLLM({"judge": answer}), an)
     rows = an.findings["observations"]
@@ -393,3 +393,89 @@ def test_withdrawn_explanation_is_removed_from_copies(an):
     assert an.findings["pending"][0].sublabel == cp.why
     _withdraw_why(an, cp)
     assert cp.why_source == "template" and an.findings["pending"][0].sublabel is None
+
+
+# ---------- review fix 1: forms that amend a form are shown with it ----------
+def test_forms_that_amend_an_exclusion_are_linked(an):
+    from policy_compare.forms import amended_by
+    assert [f.number for f in amended_by(an.fr["SNEXNY"], an.fr)] == ["SROCNY"]   # snow removal buy-back
+    assert an.fe["DNCANY"].mentions == ["AP0853UF"]                                # notice names the exclusion
+    dncany = next(f for f in an.findings["forms"] if f.context.get("form_number") == "DNCANY")
+    assert dncany.context["forms_this_form_amends"] == ["AP 0853UF — Exclusion - Communicable Disease (on both policies)"]
+
+
+def test_observation_sees_and_shows_the_buy_back(an):
+    from policy_compare.analysis.observe import observe
+    from policy_compare.diff import Ids
+    seen = {}
+
+    def answer(user):
+        seen["prompt"] = user
+        quote = "Any operations that involve the removal of snow and/or ice by any means"
+        return {**SECTION, "observations": [{"form_number": "SNEXNY", "concern": "Snow removal is excluded except at 1-4 family homes.",
+                                             "why": "SROCNY gives back cover only for small residences.",
+                                             "recommendation": "Ask whether the client clears snow at commercial sites.",
+                                             "severity": "high", "quote": quote}]}
+
+    rows = observe(StubLLM({"observations": answer}), an, Ids())
+    assert '"amended_by"' in seen["prompt"] and "SROCNY" in seen["prompt"] and "do not apply to snow removal" in seen["prompt"]
+    assert rows and "amended by SROCNY" in rows[0].sublabel
+
+
+# ---------- review fix 12: the second pass must name the contradicting fact ----------
+def test_judge_needs_a_contradicting_fact(an):
+    from policy_compare.analysis.judge import facts, judge
+    fs = facts(an)
+    assert any("45 days" in f["fact"] for f in fs)            # what CP 382 says is part of the facts
+    cp = next(f for f in an.findings["forms"] if f.context.get("form_number") == "CP 382")
+    cp.why_default, cp.why, cp.why_source = cp.why, "Removed; it required an anti-arson application within 45 days.", "model"
+
+    def answer(user):
+        stmts = json.loads(user.split("STATEMENTS (JSON):", 1)[1].split("\n\nReturn", 1)[0])
+        return {"unsupported": [{"id": s["id"], "contradicted_by": "none", "reason": "No 45-day rule."}
+                                for s in stmts if "45 days" in s["text"]]}
+
+    judge(StubLLM({"judge": answer}), an)
+    assert cp.why_source == "model" and "45 days" in cp.why         # no fact named: the true detail stays
+    assert an.audit["judge_ignored"]
+
+
+# ---------- review fixes 5, 6, 8, 9, 10 ----------
+def test_what_it_does_quotes_the_form(an):
+    cp = next(f for f in an.findings["forms"] if f.context.get("form_number") == "CP 382")
+    assert cp.why.startswith("The form says: “Unless the insured returns the completed") and "[[E1 p.61]]" in cp.why
+    assert an.findings["pending"][0].change == "Ask the carrier why CP 382 was removed and whether its terms still apply to the renewal."
+
+
+def test_form_roles_from_the_text_set_default_impact(with_stub):
+    def roles(user):
+        ids = dict((num, i) for i, num in re.findall(r'"id": "(F\d+)",\s*"form_number": "([^"]+)"', user))
+        return {"roles": [{"id": ids["CP 382"], "role": "coverage"}, {"id": ids["DNCANY"], "role": "notice"}]}
+    with_stub(StubLLM({"form_roles": roles}))
+    an = analyse(POLICY_1, POLICY_2, use_llm=True)
+    cp = next(f for f in an.findings["forms"] if f.context.get("form_number") == "CP 382")
+    assert cp.context["form_role"].startswith("coverage") and (cp.impact, cp.severity) == ("reduced", "high")
+    assert an.audit["form_roles"]["roles"]["DNCANY"] == "notice"
+
+
+def test_title_only_requirement_is_labelled(an):
+    ai = next(f for f in an.findings["checklist"] if f.context.get("slot") == "ai_ongoing")
+    assert ai.exp == "Yes - BAI 1 (by title)"
+
+
+def test_recommended_actions_rest_on_findings(an, with_stub):
+    from policy_compare.analysis.recommend import default_recs, recommend
+    d = default_recs(an)
+    assert d and d[0].action.startswith("Ask the carrier why CP 382 was removed") and d[0].finding_ids
+    pid = next(f.id for f in an.findings["forms"] if f.context.get("form_number") == "CP 382")
+    stub = StubLLM({"recommend": {"actions": [
+        {"action": "Ask the carrier why CP 382 was removed and whether New York still requires it.",
+         "reason": "The client owns property in New York, where anti-arson applications can be required.",
+         "priority": "high", "audience": "carrier", "evidence_ids": [pid]},
+        {"action": "Buy terrorism cover.", "reason": "It is important.", "priority": "high", "audience": "client",
+         "evidence_ids": ["f999"]},
+    ]}})
+    recs = recommend(stub, an)
+    assert [r.action for r in recs] == ["Ask the carrier why CP 382 was removed and whether New York still requires it."]
+    assert recs[0].priority == "medium"                        # capped: the cited item is a medium-severity confirm
+    assert an.audit["recommendations"]["dropped"][0]["reason"] == "cites no finding of the comparison"

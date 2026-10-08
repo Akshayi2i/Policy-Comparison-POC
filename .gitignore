@@ -4,7 +4,7 @@ poc4_project.zip
 
 # local environment and generated files
 .venv/
-output/
+# output/ is committed on purpose (generated reports, drafts and the model answer cache)
 __pycache__/
 *.pyc
 .pytest_cache/

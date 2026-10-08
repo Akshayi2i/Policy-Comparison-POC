@@ -62,6 +62,9 @@ def collect(an: "Analysis") -> list[Statement]:
                 lambda f=f: setattr(f, "why", f.context.get("evidence") or f.why))
         elif f.why_source == "model" and f.why:
             add(f"{f.label} — {f.explain_label}", f.why, lambda f=f: _withdraw_why(an, f))
+    for r in [r for r in an.recommendations if r.source == "model"]:
+        add(f"recommended action: {r.action}", f"{r.action} {r.reason}",
+            lambda r=r: an.recommendations.remove(r) if r in an.recommendations else None)
     crit = {f.id: f for f in an.critical_candidates()}
     for fid, n in an.narratives.critical.items():
         if n.source == "model" and fid in crit:
@@ -81,28 +84,56 @@ def _withdraw_why(an: "Analysis", f) -> None:
             g.sublabel = None
 
 
-def facts(an: "Analysis") -> dict:
+def facts(an: "Analysis") -> list[dict]:
+    """Numbered facts (F1, F2, ...) the second pass must cite when it calls a statement unsupported."""
     from policy_compare.analysis.assess import client_profile
-    return {
-        "client_profile": client_profile(an),
-        "changes": [{"label": f.label, "change": f.change, "impact": f.impact, "severity": f.severity}
-                    for f in an.unique_changes()],
-        "form_changes": [{"form": f.label, "change": f.change, "form_role": f.context.get("form_role"),
-                          "related_forms_still_on_renewal": f.context.get("related_forms_still_on_renewal"),
-                          "replaced_by": f.context.get("replaced_by")}
-                         for f in an.findings.get("forms", []) if f.changed],
-        "forms_on_both_policies": [f"{f.number} — {f.title}" for k, f in an.fr.items() if k in an.fe],
-        "observation_quotes": [{"form": f.context.get("form_number"), "quote": f.context.get("quote")}
-                               for f in an.findings.get("observations", [])],
-        "premium": list(an.premium()) if an.premium() else None,
-    }
+    from policy_compare.fmt import money
+    from policy_compare.forms import amended_by, form_summary
+    lines: list[str] = []
+    p = client_profile(an)
+    lines.append("Client: " + "; ".join(f"{k.replace('_', ' ')}: {v}" for k, v in p.items() if v))
+    prem = an.premium()
+    if prem:
+        lines.append(f"Premium: expiring {money(prem[0])}, renewal {money(prem[1])}.")
+    for f in an.unique_changes():
+        lines.append(f"Change: {f.label}: {f.change} (impact {f.impact}, severity {f.severity}).")
+    for f in an.findings.get("forms", []):
+        if not f.changed:
+            continue
+        key = f.change_key.split(":", 1)[1].split(">")[0]
+        form = an.fe.get(key) or an.fr.get(key)
+        ti = an.ti_e if key in an.fe else an.ti_r
+        said = form_summary(ti, form.doc) if form else None
+        extra = [f"role: {f.context['form_role']}"] if f.context.get("form_role") else []
+        for k in ("forms_this_form_amends", "forms_that_amend_this_form", "replaced_by"):
+            if f.context.get(k):
+                extra.append(f"{k.replace('_', ' ')}: {f.context[k]}")
+        if said:
+            extra.append(f"the form says: “{said[0]}”")
+        lines.append(f"Form change: {f.label}: {f.change}; " + "; ".join(extra) + ".")
+    both = [f"{f.number} — {f.title}" for k, f in an.fr.items() if k in an.fe]
+    if both:
+        lines.append("On both policies (unchanged): " + "; ".join(both) + ".")
+    for k, f in an.fr.items():
+        by = amended_by(f, an.fr)
+        if by and k in an.fe:
+            lines.append(f"{f.number} is amended by {', '.join(o.number + ' — ' + o.title for o in by)} (on the renewal).")
+    for f in an.findings.get("observations", []):
+        lines.append(f"Observation (unchanged term): {f.context.get('form_number')} says “{f.context.get('quote')}”.")
+    if not any(f.kind == "form_edition" for f in an.findings.get("forms", [])):
+        lines.append("No form edition changed.")
+    for s in ("limits", "premium", "terms"):
+        if not any(f.changed for f in an.findings.get(s, [])):
+            lines.append(f"No {s} value changed.")
+    return [{"id": f"F{i}", "fact": t} for i, t in enumerate(lines, 1)]
 
 
 def judge(llm: LLMClient, an: "Analysis") -> None:
     statements = collect(an)
     if not statements:
         return
-    user = prompt("judge").format(facts=json.dumps(facts(an), ensure_ascii=False, indent=1),
+    fs = facts(an)
+    user = prompt("judge").format(facts=json.dumps(fs, ensure_ascii=False, indent=1),
                                   statements=json.dumps([{"id": s.id, "text": s.text} for s in statements],
                                                         ensure_ascii=False, indent=1))
     try:
@@ -111,11 +142,16 @@ def judge(llm: LLMClient, an: "Analysis") -> None:
         an.warnings.append(f"second-pass check failed; narrative kept as validated by the rules ({e})")
         return
     by_id = {s.id: s for s in statements}
+    fact_by_id = {f["id"]: f["fact"] for f in fs}
     log = an.audit.setdefault("judge", [])
     for issue in res.unsupported:
         st = by_id.get(issue.id)
         if not st:
             continue
+        if issue.contradicted_by not in fact_by_id:      # no contradicting fact named: the statement stays
+            an.audit.setdefault("judge_ignored", []).append({"field": st.field, "reason": issue.reason})
+            continue
         st.revert()
-        log.append({"field": st.field, "text": st.text, "reason": issue.reason})
+        log.append({"field": st.field, "text": st.text, "reason": issue.reason,
+                    "fact": fact_by_id[issue.contradicted_by]})
     an.audit["judge_checked"] = len(statements)

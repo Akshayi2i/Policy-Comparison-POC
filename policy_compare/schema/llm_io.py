@@ -143,6 +143,7 @@ class QAAnswer(BaseModel):
 # ---------- G: second-pass check of the model's own narrative ----------
 class JudgeIssue(BaseModel):
     id: str
+    contradicted_by: str        # id of the fact the statement contradicts
     reason: str
 
 
@@ -162,3 +163,26 @@ class FormPair(BaseModel):
 
 class FormPairing(BaseModel):
     pairs: list[FormPair]
+
+
+# ---------- recommended actions ----------
+class RecAction(BaseModel):
+    action: str
+    reason: str
+    priority: Level
+    audience: Literal["carrier", "client", "internal"]
+    evidence_ids: list[str]
+
+
+class Recommendations(BaseModel):
+    actions: list[RecAction]
+
+
+# ---------- what each form does ----------
+class FormRole(BaseModel):
+    id: str
+    role: Literal["coverage", "exclusion", "notice", "condition", "schedule"]
+
+
+class FormRoles(BaseModel):
+    roles: list[FormRole]

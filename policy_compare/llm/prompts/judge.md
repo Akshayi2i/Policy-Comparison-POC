@@ -7,12 +7,12 @@ FACTS (JSON):
 STATEMENTS (JSON):
 {statements}
 
-Return in "unsupported" every statement that the facts do NOT support, with a short reason (max 20 words). A statement
-is unsupported if it:
-- says something changed, was removed, added, reduced or increased when the facts do not show that change;
+Return in "unsupported" every statement that a fact CONTRADICTS. For each give "contradicted_by" (the id of that
+fact, e.g. "F7") and a short reason (max 20 words). A statement is contradicted when it:
+- says something changed, was removed, added, reduced or increased and a fact shows it did not;
 - describes a notice form as an exclusion, or an unchanged form as changed;
-- names an amount, date, form or coverage that is not in the facts;
-- draws a conclusion that contradicts the facts (e.g. "cover is narrower" when nothing reduces cover).
+- draws a conclusion a fact rules out (e.g. "cover is narrower" when the facts say nothing reduces cover).
+A detail that the facts do not mention is NOT a contradiction (the form text says more than the facts list); leave it.
 
 Observations are about forms that are on BOTH policies (see "forms_on_both_policies" and "observation_quotes"):
 they describe unchanged exclusions, not changes, so do not flag them for not being a change.

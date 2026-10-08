@@ -22,6 +22,10 @@ MAX_ITEMS = 8
 
 
 def _carrier_items(an: "Analysis") -> list[str]:
+    """Questions for the carrier: the carrier-facing recommended actions, else the critical and pending items."""
+    recs = [r for r in an.recommendations if r.audience == "carrier"]
+    if recs:
+        return [r.action for r in recs][:MAX_ITEMS]
     items: list[str] = []
     crit = {f.id: f for f in an.critical_candidates()}
     for fid in an.narratives.critical_order:
@@ -94,6 +98,8 @@ def build_drafts(an: "Analysis", llm: Optional[LLMClient]) -> ReportDrafts:
         "premium": [money(x) for x in an.premium()] if an.premium() else None,
         "expiry_deadline": an.deadline,
         "carrier_questions": _carrier_items(an),
+        "recommended_actions": [{"action": r.action, "reason": r.reason, "audience": r.audience, "priority": r.priority}
+                                for r in an.recommendations],
         "changes": [{"label": f.label, "change": f.change, "impact": f.impact} for f in an.unique_changes()][:30],
         "observations": [{"concern": f.label, "recommendation": f.change} for f in an.findings.get("observations", [])],
         "sender": {"name": b.get("prepared_by"), "agency": b.get("agency")},

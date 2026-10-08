@@ -118,19 +118,33 @@ JSON A, JSON B (+ optional source PDFs)
 
 ### Where the model is used
 
-Every model claim is checked by code before it is used. If a check fails, the claim is dropped and the reason is logged in the audit (`rejected_text`, `form_equivalence`, `judge`).
+Every model claim is checked by code before it is used. If a check fails, the claim is dropped and the reason is logged in the audit (`rejected_text`, `form_equivalence`, `form_roles`, `recommendations`, `judge`).
 
 | Feature | What the model does | What code checks | Where it shows |
 |---|---|---|---|
+| Form roles | reads each form and says what it does: coverage (incl. buy-backs), exclusion, notice, condition or schedule | — (one batched call; without the model the role is guessed from title words) | default impact of removed / added forms (a removed buy-back is a likely reduction, a removed notice is not) |
 | Section assessment | impact and severity of unlocked changes, judged against the client's business (class, state, coverage parts); "why it matters" | numbers must be in the facts; no claims that contradict the forms schedule; risk floor and ceiling | §3–§7 |
 | Form equivalence | pairs a removed form with an added form that replaces it, quoting both | both quotes must be verbatim in each form's own pages; each form is used once; a lost contract requirement stays a locked reduction | §7 "Forms replaced", FORMS KPI |
 | Contract requirements | reads the AI / P&NC / waiver wording in the forms | the quote must be verbatim in the named form | §9 rows, with a "From the form wording" quote |
 | Focus topics | picks topics for this industry when `--focus` is not given | topics must appear in the policy text | §10 |
-| Coverage observations | unchanged exclusions that matter for this client, with a recommendation | the form must be on both policies; the quote must be verbatim in that form | §12 (not counted as changes) |
-| Second pass | lists its own statements that the facts do not support | — (only reverts to rule-based text) | all model text |
+| Coverage observations | unchanged exclusions that matter for this client, with a recommendation; it also sees the endorsements that amend each exclusion (e.g. a buy-back) | the form must be on both policies; the quote must be verbatim in that form; the row always names the amending forms | §12 (not counted as changes) |
+| Recommended actions | up to 6 specific actions (who, what, why) for the account manager | each action must cite findings by id; priority is capped by what those findings support; every critical change keeps an action | Executive Summary "Recommended actions"; the carrier email's questions |
+| Second pass | lists its own statements that a numbered fact contradicts | the fact it cites must exist, otherwise nothing is reverted; it only reverts to rule-based text | all model text |
 | Drafts | carrier email and client letter | the same gate as the report text | `.carrier_email.txt`, `.client_letter.txt`, `drafts` in JSON |
 | Questions | answers from retrieved passages | the citations must be verbatim; the answer is withheld otherwise | `--ask`, `POST /ask` |
 | Scanned pages | transcribes page images (vision model only) | — (the text is used like any other page text; the pages are listed in Appendix A) | Appendix A "How it was read" |
+
+**Forms that name other forms.** When a form's own text names another form (by number, or by its full title), the
+two are linked, e.g. SROCNY ("Snow Removal Operations Coverage") names SNEXNY ("Exclusion Snow Removal Operations")
+and gives part of that cover back. The model sees linked forms together, and the report shows the link.
+
+**Checks on all model text.** Numbers must exist in the facts; a statement may not contradict the forms schedule
+(by title or by form number); no "reduced cover" claim where nothing was reduced; no "changes" or "affected" claim
+where nothing material changed; no talk about the comparison itself ("values from the report", "quotes match"); no
+mention of form editions when none changed. Title Case is put into sentence case rather than thrown away.
+
+**Layout.** Sections where nothing changed show one summary line instead of the two cards. If the reference page breaks
+would leave a page nearly empty (e.g. one table row), the report is printed again with the appendices kept together.
 
 **What code does and what the model does.** Code owns every value, amount, percentage, date, page reference, count and KPI. The model only classifies, explains, ranks and writes. It refers to findings by id and never returns values.
 

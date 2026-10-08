@@ -47,9 +47,12 @@ forms:
   removed_default: {impact: confirm, severity: medium}
   removed_contract_slot: {impact: reduced, severity: critical}
   added_default: {impact: confirm, severity: medium}
-  added_exclusion: {impact: reduced, severity: high}    # title says exclusion / limitation
+  added_exclusion: {impact: reduced, severity: high}    # the form is an exclusion / limitation
+  removed_coverage: {impact: reduced, severity: high}   # a coverage grant or buy-back is gone
+  added_coverage: {impact: improved, severity: low}     # a coverage grant or buy-back is new
   edition_changed: {impact: confirm, severity: medium}
   wording_changed: {impact: confirm, severity: medium}
+  # fallback only (without the model): a form's role is guessed from words in its title
   exclusion_words: ["exclusion", "excluded", "limitation", "restriction"]
   notice_words: ["notice", "privacy", "policyholder information", "disclosure"]
 
@@ -106,6 +109,16 @@ next_step_templates:
   deductible_reduced: "Ask the underwriter to remove or lower the new {label}."
   value_confirm: "Confirm {label} with the carrier."
   default: "Review with the carrier before {deadline}."
+
+# Section 11: the question to put to the carrier for a form removed or added without a clear reason.
+# {label} = form number; chosen by the form's role (notice / exclusion / other)
+pending_steps:
+  removed_notice: "Ask the carrier whether the {label} notice is still required on the renewal."
+  removed_exclusion: "Ask the carrier to confirm that removing {label} is intended, so the exclusion no longer applies."
+  removed: "Ask the carrier why {label} was removed and whether its terms still apply to the renewal."
+  added_notice: "Ask the carrier why the {label} notice was added and what it refers to."
+  added_exclusion: "Ask the carrier why {label} was added and what cover it takes away."
+  added: "Ask the carrier why {label} was added and what it changes."
 
 # default theme of a critical change by finding kind / section (the model may refine)
 themes:

@@ -16,4 +16,8 @@ Rules you must follow:
    - medium: carrier change, form edition change, wording that needs a read, moderate limit change.
    - low: administrative or minor.
 7. Style: plain, direct English for a broker. Headlines, bullets and statements are complete sentences in sentence case ending with a full stop — never Title Case labels like "Pending Confirmation". Use form numbers and titles exactly as given. No marketing language, no hedging filler, no markdown.
-8. Respond with one JSON object that matches the schema exactly. No prose outside the JSON.
+8. Write about the policies, never about the comparison or the data you were given: no "values from the report",
+   "quotes match", "per the facts", "all changes confirmed". A confidence reason names what in the policy documents makes
+   the reading certain or uncertain (e.g. digital declarations, form wording read in full, a scanned page, a form
+   matched only by its title).
+9. Respond with one JSON object that matches the schema exactly. No prose outside the JSON.

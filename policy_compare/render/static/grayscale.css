@@ -76,3 +76,7 @@
 .th-continuity, .th-scope, .th-limits, .th-contracts, .th-market { color: #111; }
 .counts .q-ic { background: none; color: #111; width: auto; height: auto; font-size: inherit; border-radius: 0; }
 .kpi.accent { box-shadow: inset 2.2pt 0 0 #111; }
+
+.action .prio.p-high { background: #111; color: #fff; border: none; }
+.action .prio.p-medium { background: #fff; color: #111; border: 0.75pt solid #111; }
+.action .prio.p-low { background: #f2f2f2; color: #444; border: 0.5pt solid #bbb; }

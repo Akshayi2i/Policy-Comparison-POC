@@ -109,9 +109,13 @@ def default_section(section: str, rows: list[Finding], ctx: dict) -> SectionNarr
     if section == "focus" and not ctx.get("topics"):
         headline = "No client focus topics were supplied for this comparison."
     elif section == "focus":
-        hit = [r for r in rows if r.changed]
+        hit = [r for r in rows if r.changed and r.impact != "no_impact"]     # a change with no effect on cover is not "affecting"
+        touched = [r for r in rows if r.changed and r.impact == "no_impact"]
         n = len(ctx["topics"])
-        if not hit:
+        if not hit and touched:
+            headline = (f"No change affects cover for the {plural(n, 'focus topic')}; " if n > 1 else "No change affects cover for this focus topic; ") + \
+                       ", ".join(r.label for r in touched) + f" {'has' if len(touched) == 1 else 'have'} only a change with no effect on cover."
+        elif not hit:
             headline = f"None of the {plural(n, 'client focus topic')} is affected by the renewal."
         else:
             headline = f"{len(hit)} of {plural(n, 'focus topic')} {'is' if len(hit) == 1 else 'are'} affected by the renewal: " + \

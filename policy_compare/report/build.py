@@ -11,7 +11,7 @@ from policy_compare.engine import Analysis
 from policy_compare.findings import IMPACT_RANK, SEVERITY_RANK, Finding
 from policy_compare.fmt import long_date, mdy, money, money_compact, pct, plural
 from policy_compare.schema.report import (
-    Badge, Cover, CriticalChange, CriticalSection, ExecutiveSummary, FocusBlock, FocusCard, Improvement, Kpi, Meta, Mix,
+    Action, Badge, Cover, CriticalChange, CriticalSection, ExecutiveSummary, FocusBlock, FocusCard, Improvement, Kpi, Meta, Mix,
     NoteBlock, OverviewRow, PartyCard, QuoteLine, Report, RiskAnalysis, Row, Section, SectionSummary, SourceDoc, TableBlock,
     ThemeCount, THEME_ORDER,
 )
@@ -97,6 +97,15 @@ def _value_blocks(an: Analysis, section: str) -> list:
         else:
             blocks.append(NoteBlock(text="  ".join(notes)))
     return blocks
+
+
+def _actions(an: Analysis) -> list[Action]:
+    from policy_compare.analysis.recommend import refs_for
+    out = []
+    for r in an.recommendations:
+        chips = "".join(f" [[{ref}]]" for ref in refs_for(an, r))
+        out.append(Action(priority=r.priority, audience=r.audience, action=r.action, reason=r.reason + chips))
+    return out
 
 
 def _forms_blocks(an: Analysis) -> list:
@@ -196,6 +205,7 @@ def build_report(an: Analysis, prepared_on: Optional[date] = None) -> Report:
         n = an.narratives.sections[s]
         sections.append(Section(
             number=str(SECTION_ORDER.index(s) + 3), title=SECTION_TITLES[s], page_break_before=(s == "policy"),
+            compact=not any(f.changed for f in rows) and n.risk_level == "low",
             summary=SectionSummary(headline=n.headline, bullets=n.bullets, mix=mix_of(rows), items_compared=sum(f.changed for f in rows)),
             risk=RiskAnalysis(level=n.risk_level, statement=n.risk_statement, confidence=n.confidence, confidence_reason=n.confidence_reason),
             blocks=BUILDERS[s](an)))
@@ -243,7 +253,7 @@ def build_report(an: Analysis, prepared_on: Optional[date] = None) -> Report:
               Kpi(label="CRITICAL CHANGES", value=str(n_items), sub=f"act before {an.deadline}", accent=True),
               Kpi(label="FORMS", value=f"+{forms_added} / −{forms_removed}", sub="added / removed" + (f" · {forms_replaced} replaced" if forms_replaced else "")),
               Kpi(label="TO CONFIRM", value=str(len(an.findings["pending"])), sub="items with the carrier")],
-        changes_total=len(unique), mix=mix)
+        changes_total=len(unique), mix=mix, actions=_actions(an))
 
     parts = [p.strip() for p in (next((f.ren for f in an.findings["policy"] if f.kind == "coverage_parts"), "") or "").split(",") if p.strip() and p.strip() != "—"]
     trigger = "Claims-Made" if any(f.label.startswith("Claims-made") and "Claims-Made" in f.exp + f.ren for f in an.findings["checklist"]) else None

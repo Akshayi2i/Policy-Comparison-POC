@@ -41,6 +41,7 @@ class Analysis:
     warnings: list[str] = field(default_factory=list)
     audit: dict = field(default_factory=dict)
     drafts: Optional[object] = None          # ReportDrafts
+    recommendations: list = field(default_factory=list)   # analysis.recommend.Rec
 
     @property
     def deadline(self) -> str:
@@ -122,6 +123,8 @@ def analyse(a: str | Path | dict, b: str | Path | dict, focus: Optional[list[str
     evidence: dict = {}
     if llm:
         from policy_compare.analysis.equivalence import match_equivalents
+        from policy_compare.analysis.formroles import classify_forms
+        classify_forms(llm, an)                       # what each form does, read from its text
         match_equivalents(llm, an)                    # B: removed + added forms that are one replacement
         from policy_compare.analysis.assess import assess_sections
         from policy_compare.analysis.slots import assess_slots
@@ -156,6 +159,9 @@ def analyse(a: str | Path | dict, b: str | Path | dict, focus: Optional[list[str
         from policy_compare.analysis.judge import judge
         from policy_compare.analysis.synthesize import synthesize
         synthesize(llm, an, ctx)
+    from policy_compare.analysis.recommend import recommend
+    an.recommendations = recommend(llm, an)            # recommended actions (rule-based without the model)
+    if llm:
         if settings().llm_judge:
             judge(llm, an)                            # G: second pass over the model's own statements
     from policy_compare.analysis.guards import apply_guards

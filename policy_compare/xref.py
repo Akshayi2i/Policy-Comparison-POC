@@ -15,6 +15,16 @@ from policy_compare.textindex import Sentence, TextIndex, norm_key, norm_space
 CONTRACT_WHY = "Contracts that require it would be breached, and certificates issued on expiring terms would overstate coverage."
 
 
+def slot_status(ev, forms_with_slot: list) -> str:
+    """The wording decides: a verified quote gives met / partial. A title match the wording did not confirm is
+    only partly met; a title match with no wording read (no model) counts as met."""
+    if ev and ev.status in ("met", "partial"):
+        return ev.status
+    if forms_with_slot:
+        return "partial" if ev and ev.status == "not_found" else "met"
+    return "not_found"
+
+
 def _ref(side: Side, page: Optional[int]) -> Optional[str]:
     return f"{side.ref} p.{page}" if page else None
 
@@ -67,8 +77,9 @@ def checklist(E: Side, R: Side, fe: dict[str, Form], fr: dict[str, Form], findin
         se = [f for f in fe.values() if sid in f.slots]
         sr = [f for f in fr.values() if sid in f.slots]
         ev_e, ev_r = evidence.get("expiring", {}).get(sid), evidence.get("renewal", {}).get(sid)
-        st_e = ev_e.status if ev_e and ev_e.status != "not_found" else ("met" if se else "not_found")
-        st_r = ev_r.status if ev_r and ev_r.status != "not_found" else ("met" if sr else "not_found")
+        st_e, st_r = slot_status(ev_e, se), slot_status(ev_r, sr)
+        disputed = [side for side, ev, fs in (("expiring", ev_e, se), ("renewal", ev_r, sr))
+                    if fs and ev and ev.status == "not_found"]
         page_e = ev_e.page if ev_e and ev_e.page else (se[0].page if se else None)
         page_r = ev_r.page if ev_r and ev_r.page else (sr[0].page if sr else None)
         f = Finding(id=ids.next(), change_key=f"slot:{sid}", section="checklist", kind="contract_slot",
@@ -76,7 +87,8 @@ def checklist(E: Side, R: Side, fe: dict[str, Form], fr: dict[str, Form], findin
                     exp=label_for(ev_e, se), ren=label_for(ev_r, sr),
                     exp_ref=_ref(E, page_e) if st_e != "not_found" else None,
                     ren_ref=_ref(R, page_r) if st_r != "not_found" else None,
-                    sublabel=quote_note(ev_r, R.ref) or quote_note(ev_e, E.ref),
+                    sublabel=quote_note(ev_r, R.ref) or quote_note(ev_e, E.ref) or (
+                        "Matched by the form title; the form wording did not confirm it." if disputed else None),
                     context={"slot": sid, "expiring_forms": [x.full_title for x in se], "renewal_forms": [x.full_title for x in sr],
                              "expiring_status": st_e, "renewal_status": st_r,
                              "evidence_note": (ev_r.note if ev_r else None) or (ev_e.note if ev_e else None)})
@@ -272,13 +284,22 @@ def _related_pages(related: list[Finding], ti: TextIndex, attr: str) -> list[int
 
 # ---------------- Section 11: items pending confirmation ----------------
 
+def pending_step(f: Finding) -> str:
+    """The question for the carrier, by direction (removed / added) and the form's role."""
+    steps = config("rubric").get("pending_steps", {})
+    role = (f.context.get("form_role") or "").split(" ")[0]          # notice | exclusion | coverage
+    side = "removed" if f.kind == "form_removed" else "added"
+    key = f"{side}_{role}" if f"{side}_{role}" in steps else side
+    return steps.get(key, "Confirm {label} with the carrier.").format(label=f.context.get("form_number") or f.label)
+
+
 def pending(findings: list[Finding], ids: Ids) -> list[Finding]:
     out = []
     for f in findings:
         if f.impact == "confirm" and f.kind in ("form_removed", "form_added") and not f.duplicate_of:
             out.append(Finding(id=ids.next(), change_key=f.change_key, section="pending", kind="pending", label=f.label,
                                sublabel=f.why if f.why_source == "model" else None, exp=f.exp, ren=f.ren if f.kind == "form_added" else "—",
-                               exp_ref=f.exp_ref, ren_ref=f.ren_ref, change="Pending confirmation with the carrier",
+                               exp_ref=f.exp_ref, ren_ref=f.ren_ref, change=pending_step(f),
                                impact=f.impact, severity=f.severity, locked=True, duplicate_of=f.change_key,
                                context={"source_finding": f.id}))
     return out

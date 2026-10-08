@@ -49,6 +49,18 @@
     {% for k in ["reduced", "confirm", "no_impact", "improved"] %}{% if ex.mix[k] %}<span class="chip-count">{{ m.impact_chip(k) }}{{ ex.mix[k] }}</span>{% endif %}{% endfor %}
   </div>
 </div>
+{% if ex.actions %}
+<div class="actions">
+  <div class="actions-top"><span class="ttl">Recommended actions</span><span class="sub">before {{ r.critical.deadline }}</span></div>
+  {% for a in ex.actions %}
+  <div class="action">
+    <span class="prio p-{{ a.priority }}">{{ m.LVL_LABEL[a.priority] }}</span>
+    <span class="who">{{ {"carrier": "Carrier", "client": "Client", "internal": "Internal"}[a.audience] }}</span>
+    <div class="txt"><div class="act">{{ a.action }}</div><div class="why">{{ a.reason | rich }}</div></div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
 
 {# =================== 2 CRITICAL CHANGES =================== #}
 {% set cr = r.critical %}
@@ -105,6 +117,12 @@
 {% for s in r.sections %}
 <section class="{{ 'page-break' if s.page_break_before else '' }}">
 {{ m.sec_head(s.number, s.title) }}
+{% if s.compact %}
+<div class="compact-sum">
+  <span class="hl">{{ s.summary.headline }}</span>
+  <span class="meta"><span class="lv lvl-{{ s.risk.level }}">{{ m.meter(s.risk.level) }}<b>{{ m.LVL_LABEL[s.risk.level] }} risk</b></span> · Confidence: {{ m.LVL_LABEL[s.risk.confidence] }}</span>
+</div>
+{% else %}
 <div class="cards">
   <div class="sum">
     <div class="card-lbl">SECTION SUMMARY</div>
@@ -118,6 +136,7 @@
     <div class="conf"><strong>Confidence: {{ m.LVL_LABEL[s.risk.confidence] }}.</strong> {{ s.risk.confidence_reason | rich }}</div>
   </div>
 </div>
+{% endif %}
 
 {% for blk in s.blocks %}
 {% if blk.kind == "table" %}
@@ -170,7 +189,7 @@
 {% endfor %}
 
 {# =================== A SOURCE DOCUMENTS =================== #}
-<section>
+<section class="{{ 'keep-whole' if tight else '' }}">
 {{ m.sec_head("A", "Source Documents", alt=True) }}
 <table class="tbl src w-src">
   <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"><col class="c5"><col class="c6"></colgroup>
@@ -182,7 +201,7 @@
 </section>
 
 {# =================== B HOW TO READ =================== #}
-<section class="page-break appx">
+<section class="{{ 'keep-whole' if tight else 'page-break' }} appx">
 {{ m.sec_head("B", "How to Read This Report", alt=True) }}
 <div class="legend">
   <div class="legend-grid">

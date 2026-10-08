@@ -249,13 +249,22 @@ def policy_level(E: Side, R: Side, ti_e: TextIndex, ti_r: TextIndex, e_el: dict[
         out.insert(0, f)
 
     # coverage parts
-    parts_cfg: dict = config("catalogue").get("coverage_parts", {})
+    labels: dict = config("catalogue").get("coverage_parts", {})
+    skip = set(config("catalogue").get("non_coverage_sections", []))
+
+    def part_label(key: str) -> str:
+        if key in labels:
+            return labels[key]
+        k = re.sub(r"(_coverages?)?(_list|_section|_schedule)$", "", key)
+        return k.replace("_", " ").strip().capitalize()
 
     def parts(raw: dict, els: dict[str, Element]) -> list[str]:
         present = []
-        for key, label in parts_cfg.items():
-            if key in raw and any(el.container == key and el.cell.present and el.section != "ignore" for el in els.values()):
-                present.append(label)
+        for key in raw:                                  # in the order of the policy JSON
+            if key in skip or key.startswith("_") or not isinstance(raw[key], (dict, list)):
+                continue
+            if any(el.container == key and el.cell.present and el.section != "ignore" for el in els.values()):
+                present.append(part_label(key))
         return present
 
     pe_, pr_ = parts(E.data, e_el), parts(R.data, r_el)

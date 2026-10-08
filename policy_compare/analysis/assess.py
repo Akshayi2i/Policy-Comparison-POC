@@ -138,14 +138,17 @@ def section_from(res, s: str, rows: list[Finding], an: "Analysis", gate: TextGat
     tag = f"§{SECTION_TITLES[s]}"
     # nothing here reduces cover: reject claims that it does (observations describe existing limits, so they may)
     nr = not allow_reduction_words and not any(r.impact == "reduced" for r in rows)
-    bullets = [b for b in (gate.take(f"{tag} bullet", x, 18, kind="bullet", no_reduction=nr)
+    # nothing material changed here: no "changes noted" / "topic affected" (observations are not changes at all)
+    nc = s != "observations" and not any(r.changed and r.impact != "no_impact" for r in rows)
+    bullets = [b for b in (gate.take(f"{tag} bullet", x, 18, kind="bullet", no_reduction=nr, no_change=nc)
                            for x in res.bullets[:3]) if b]
     n = SectionNarrative(
-        headline=gate.take(f"{tag} headline", res.headline, 30, kind="headline", no_reduction=nr) or d.headline,
+        headline=gate.take(f"{tag} headline", res.headline, 30, kind="headline", no_reduction=nr, no_change=nc) or d.headline,
         bullets=bullets or d.bullets,
-        takeaway=gate.take(f"{tag} takeaway", res.takeaway, 25, kind="headline", no_reduction=nr) or d.takeaway,
+        takeaway=gate.take(f"{tag} takeaway", res.takeaway, 25, kind="headline", no_reduction=nr, no_change=nc) or d.takeaway,
         risk_level=res.risk_level,
-        risk_statement=gate.take(f"{tag} risk statement", res.risk_statement, 36, no_reduction=nr) or d.risk_statement,
+        risk_statement=gate.take(f"{tag} risk statement", res.risk_statement, 36, no_reduction=nr, no_change=nc)
+        or d.risk_statement,
         confidence=res.confidence,
         confidence_reason=gate.take(f"{tag} confidence reason", res.confidence_reason, 36) or d.confidence_reason,
         source="model")

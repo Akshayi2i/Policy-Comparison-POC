@@ -64,6 +64,13 @@ class Kpi(BaseModel):
     accent: bool = False  # the red "critical changes" tile
 
 
+class Action(BaseModel):
+    priority: Level
+    audience: Literal["carrier", "client", "internal"]
+    action: str
+    reason: str   # rich (page chips)
+
+
 class ExecutiveSummary(BaseModel):
     risk: Level
     confidence: Level
@@ -72,6 +79,7 @@ class ExecutiveSummary(BaseModel):
     kpis: list[Kpi]
     changes_total: int
     mix: Mix
+    actions: list[Action] = []
 
 
 class CriticalChange(BaseModel):
@@ -180,6 +188,7 @@ class Section(BaseModel):
     number: str
     title: str
     page_break_before: bool = False
+    compact: bool = False          # nothing changed: one summary line instead of the two cards
     summary: SectionSummary
     risk: RiskAnalysis
     blocks: list[Block] = []

@@ -1,0 +1,965 @@
+{
+ "meta": {
+  "title": "Derek P Halstead Construction Co Inc — Policy Renewal Comparison",
+  "brand": "Fideon OS",
+  "agency": "Fideon Demo Agency",
+  "header_right": "Derek P Halstead Construction Co Inc · Renewal Comparison",
+  "footer_left": "Confidential · for discussion; the policies as issued govern coverage",
+  "disclaimer": "This comparison summarises differences between the expiring policy (as amended by its endorsements and policy changes) and the renewal document, for discussion purposes. It does not replace the policy wording: coverage is determined solely by the policies as issued."
+ },
+ "cover": {
+  "agency": "Fideon Demo Agency",
+  "insured": "Derek P Halstead Construction Co Inc",
+  "subtitle": "General Liability / Property / Package endorsement",
+  "expiring": {
+   "carrier": "Utica First Insurance Company",
+   "policy_number": "ART3000742185",
+   "period": "09/24/2025 – 09/24/2026"
+  },
+  "renewal": {
+   "carrier": "Utica First Insurance Company",
+   "policy_number": "ART3000742185",
+   "period": "09/24/2026 – 09/24/2027"
+  },
+  "prepared_line": "Prepared October 08, 2026 by Account Manager (demo)"
+ },
+ "executive": {
+  "risk": "medium",
+  "confidence": "high",
+  "verdict": "**Largely like-for-like renewal.** Removed NY Anti Arson Amendment and Communicable Disease notice.",
+  "confidence_note": "All data consistent and clear.",
+  "kpis": [
+   {
+    "label": "PREMIUM",
+    "value": "$0",
+    "sub": "unchanged · $1,879 → $1,879",
+    "accent": false
+   },
+   {
+    "label": "CRITICAL CHANGES",
+    "value": "0",
+    "sub": "act before 09/24/2026",
+    "accent": true
+   },
+   {
+    "label": "FORMS",
+    "value": "+0 / −2",
+    "sub": "added / removed",
+    "accent": false
+   },
+   {
+    "label": "TO CONFIRM",
+    "value": "1",
+    "sub": "items with the carrier",
+    "accent": false
+   }
+  ],
+  "changes_total": 4,
+  "mix": {
+   "reduced": 0,
+   "confirm": 1,
+   "no_impact": 3,
+   "improved": 0
+  }
+ },
+ "critical": {
+  "intro": "No change reduces cover at Critical or High severity. Items to confirm are listed in the sections below.",
+  "deadline": "09/24/2026",
+  "themes": [],
+  "items": [],
+  "improvements": [],
+  "empty_note": "No critical changes found — nothing on the renewal reduces cover at Critical or High severity."
+ },
+ "overview": [
+  {
+   "number": "3",
+   "title": "Policy Information",
+   "takeaway": "No changes to policy terms or coverage.",
+   "mix": {
+    "reduced": 0,
+    "confirm": 0,
+    "no_impact": 2,
+    "improved": 0
+   },
+   "risk": "low"
+  },
+  {
+   "number": "4",
+   "title": "Premium and Financial Terms",
+   "takeaway": "No changes found in premium and financial terms.",
+   "mix": {
+    "reduced": 0,
+    "confirm": 0,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "low"
+  },
+  {
+   "number": "5",
+   "title": "Limits and Sub-limits",
+   "takeaway": "No changes found in limits and sub-limits.",
+   "mix": {
+    "reduced": 0,
+    "confirm": 0,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "low"
+  },
+  {
+   "number": "6",
+   "title": "Coverage Terms and Conditions",
+   "takeaway": "No changes found in coverage terms and conditions.",
+   "mix": {
+    "reduced": 0,
+    "confirm": 0,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "low"
+  },
+  {
+   "number": "7",
+   "title": "Endorsements and Forms",
+   "takeaway": "NY Anti-Arson and Communicable Disease coverage changes.",
+   "mix": {
+    "reduced": 0,
+    "confirm": 1,
+    "no_impact": 1,
+    "improved": 0
+   },
+   "risk": "medium"
+  },
+  {
+   "number": "8",
+   "title": "Mid-term Changes on the Expiring Policy",
+   "takeaway": "No mid-term changes were found on the expiring policy.",
+   "mix": {
+    "reduced": 0,
+    "confirm": 0,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "low"
+  },
+  {
+   "number": "9",
+   "title": "Contract Requirements and Broker Checklist",
+   "takeaway": "All contract requirements confirmed.",
+   "mix": {
+    "reduced": 0,
+    "confirm": 0,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "low"
+  },
+  {
+   "number": "10",
+   "title": "Client Focus Areas",
+   "takeaway": "1 of 2 focus topics is affected by the renewal: communicable disease.",
+   "mix": {
+    "reduced": 0,
+    "confirm": 0,
+    "no_impact": 1,
+    "improved": 0
+   },
+   "risk": "low"
+  },
+  {
+   "number": "11",
+   "title": "Items Pending Confirmation with the Carrier",
+   "takeaway": "1 item needs confirmation.",
+   "mix": {
+    "reduced": 0,
+    "confirm": 1,
+    "no_impact": 0,
+    "improved": 0
+   },
+   "risk": "medium"
+  }
+ ],
+ "sections": [
+  {
+   "number": "3",
+   "title": "Policy Information",
+   "page_break_before": true,
+   "summary": {
+    "headline": "No changes to policy terms or coverage.",
+    "bullets": [
+     "Effective date moved forward one year.",
+     "Renewal with same insurer and coverage.",
+     "Policy number remains unchanged."
+    ],
+    "mix": {
+     "reduced": 0,
+     "confirm": 0,
+     "no_impact": 2,
+     "improved": 0
+    },
+    "items_compared": 2
+   },
+   "risk": {
+    "level": "low",
+    "statement": "Administrative changes pose minimal risk to the insured.",
+    "confidence": "high",
+    "confidence_reason": "Values directly from provided data without additional interpretation needed."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": null,
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Element",
+      "Expiring",
+      "Renewal",
+      "Change / Assessment"
+     ],
+     "rows": [
+      {
+       "label": "Named Insured",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "DEREK P HALSTEAD CONSTRUCTION CO INC [[E1 p.3]]",
+       "renewal": "DEREK P HALSTEAD CONSTRUCTION CO INC [[R1 p.3]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Effective Date",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "09/24/2025 [[E1 p.3]]",
+       "renewal": "09/24/2026 [[R1 p.3]]",
+       "change": "09/24/2025 → 09/24/2026",
+       "badge": {
+        "impact": "no_impact",
+        "severity": "low"
+       },
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Expiration Date",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "09/24/2026 [[E1 p.3]]",
+       "renewal": "09/24/2027 [[R1 p.3]]",
+       "change": "09/24/2026 → 09/24/2027",
+       "badge": {
+        "impact": "no_impact",
+        "severity": "low"
+       },
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Policy period continuity",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Expires 09/24/2026 [[E1 p.4]]",
+       "renewal": "Incepts 09/24/2026 [[R1 p.4]]",
+       "change": "Continuous (no gap)",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Coverage parts (lines of business)",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "General Liability, Property, Package endorsement, Tools & Equipment, Optional Liability [[E1 p.3]]",
+       "renewal": "General Liability, Property, Package endorsement, Tools & Equipment, Optional Liability [[R1 p.3]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Insurer",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "UTICA FIRST INSURANCE COMPANY [[E1 p.3]]",
+       "renewal": "UTICA FIRST INSURANCE COMPANY [[R1 p.3]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Policy Number",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "ART3000742185 [[E1 p.3]]",
+       "renewal": "ART3000742185 [[R1 p.3]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      }
+     ],
+     "footnote": "**Also unchanged:** Admitted / surplus lines status, Insurer type, Policy type, Transaction type, Class / operations, Mailing address, Agent / producer."
+    }
+   ]
+  },
+  {
+   "number": "4",
+   "title": "Premium and Financial Terms",
+   "page_break_before": false,
+   "summary": {
+    "headline": "No changes found in premium and financial terms.",
+    "bullets": [],
+    "mix": {
+     "reduced": 0,
+     "confirm": 0,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 0
+   },
+   "risk": {
+    "level": "low",
+    "statement": "Nothing in this section reduces the client's cover.",
+    "confidence": "high",
+    "confidence_reason": "All values read from digital declarations and schedules (E1 p.3–6, R1 p.3–6)."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": null,
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Element",
+      "Expiring",
+      "Renewal",
+      "Change / Assessment"
+     ],
+     "rows": [
+      {
+       "label": "Total Premium",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$1,879.00 [[E1 p.3]]",
+       "renewal": "$1,879.00 [[R1 p.3]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      }
+     ],
+     "footnote": "**Also unchanged:** Billing, Minimum Retained Premium, Property Damage Deductible, Liability Premium, Property Deductible, Package Endorsement — Toolbox — premium, Contractor's Tools — premium, Blanket Contractor's Equipment — premium, Primary and Noncontributory Endorsement — premium, Blanket Additional Insured — premium, Care, Custody or Control — premium, Snow Removal Coverage — premium, Tools & Equipment — deductible, Installation Floater — deductible.  Not shown on either declarations page (may be set by the policy forms): Liability Deductible / SIR, Wind / Hail Deductible."
+    }
+   ]
+  },
+  {
+   "number": "5",
+   "title": "Limits and Sub-limits",
+   "page_break_before": false,
+   "summary": {
+    "headline": "No changes found in limits and sub-limits.",
+    "bullets": [],
+    "mix": {
+     "reduced": 0,
+     "confirm": 0,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 0
+   },
+   "risk": {
+    "level": "low",
+    "statement": "Nothing in this section reduces the client's cover.",
+    "confidence": "high",
+    "confidence_reason": "All values read from digital declarations and schedules (E1 p.3–6, R1 p.3–6)."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": null,
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Limit",
+      "Expiring",
+      "Renewal",
+      "Change / Assessment"
+     ],
+     "rows": [
+      {
+       "label": "Each Occurrence Limit",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$1,000,000 [[E1 p.4]]",
+       "renewal": "$1,000,000 [[R1 p.4]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "General Aggregate Limit – other than Products/Completed Work",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$2,000,000 [[E1 p.4]]",
+       "renewal": "$2,000,000 [[R1 p.4]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Aggregate Limit – Products/Completed Work",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "$2,000,000 [[E1 p.4]]",
+       "renewal": "$2,000,000 [[R1 p.4]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      }
+     ],
+     "footnote": "**Also unchanged:** Medical Payments Limit, Personal & Advertising Injury Limit, Fire Legal Liability Limit, Accounts Receivable Coverage, Care, Custody, Control Limited Coverage, Computer Coverage, Fire Legal Liability, Installation Floater, Tools & Equipment, Valuable Papers & Records Coverage, Blanket Additional Insured, Care, Custody or Control, Snow Removal Coverage, Contractors equipment schedule (AP 0660) — blanket limit and 3 more.  Not on the declarations but provided by form: Business Income / Extra Expense — AP 0611 Loss of Income Coverage 72 Hour Waiting Period (both policies)."
+    }
+   ]
+  },
+  {
+   "number": "6",
+   "title": "Coverage Terms and Conditions",
+   "page_break_before": false,
+   "summary": {
+    "headline": "No changes found in coverage terms and conditions.",
+    "bullets": [],
+    "mix": {
+     "reduced": 0,
+     "confirm": 0,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 0
+   },
+   "risk": {
+    "level": "low",
+    "statement": "Nothing in this section reduces the client's cover.",
+    "confidence": "high",
+    "confidence_reason": "All values read from digital declarations and schedules (E1 p.3–6, R1 p.3–6)."
+   },
+   "blocks": [
+    {
+     "kind": "note",
+     "text": "**Also unchanged:** Location, Construction (building 1), Valuation (building 1), Causes of loss, Package, Description of tools, Replacement cost applies, Tools & Equipment — conditions, Explosion Hazard — checked, Collapse Hazard — checked, Underground Property Damage Hazard — checked.  Not shown on either declarations page (may be set by the policy forms): Coinsurance."
+    }
+   ]
+  },
+  {
+   "number": "7",
+   "title": "Endorsements and Forms",
+   "page_break_before": false,
+   "summary": {
+    "headline": "1 item needs confirmation.",
+    "bullets": [
+     "NY Anti-Arson Amendment removed.",
+     "Communicable Disease notice no longer required."
+    ],
+    "mix": {
+     "reduced": 0,
+     "confirm": 1,
+     "no_impact": 1,
+     "improved": 0
+    },
+    "items_compared": 2
+   },
+   "risk": {
+    "level": "medium",
+    "statement": "Changes in required forms and coverage may affect compliance and claims.",
+    "confidence": "high",
+    "confidence_reason": "Values directly from provided data."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "forms",
+     "heading": "Forms removed",
+     "heading_note": "on expiring, not on renewal",
+     "intro": null,
+     "columns": [
+      "Form",
+      "Expiring",
+      "Renewal",
+      "Effect"
+     ],
+     "rows": [
+      {
+       "label": "CP 382 — NY Anti Arson Amendment",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "CP 382 10/87 [[E1 p.6]]",
+       "renewal": "Not on policy",
+       "change": "Removed at renewal",
+       "badge": {
+        "impact": "confirm",
+        "severity": "medium"
+       },
+       "explain_label": "What it does",
+       "explain": "NY Anti-Arson Amendment removed, requiring anti-arson application within 45 days."
+      },
+      {
+       "label": "DNCANY — Important Notice Exclusion - Communicable Disease",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "DNCANY 12/23 [[E1 p.6]]",
+       "renewal": "Not on policy",
+       "change": "Removed at renewal",
+       "badge": {
+        "impact": "no_impact",
+        "severity": "low"
+       },
+       "explain_label": "What it does",
+       "explain": null
+      }
+     ],
+     "footnote": "**Forms unchanged:** AP 100 1.0 [[R1 p.6]], SNEXNY 1.0 [[R1 p.6]], XCNTR 1.0 [[R1 p.6]], AP 0690 06/02 [[R1 p.6]], AP 0851UF 09/09 [[R1 p.6]], AP 0852UF 09/09 [[R1 p.6]], AP 5454 03/10 [[R1 p.6]], GL 890LA 1.0 [[R1 p.6]], UFR 1 07/11 [[R1 p.6]], XSP 1 12/96 [[R1 p.6]], AP 0710 01/15 [[R1 p.6]], PRIV 04/01 [[R1 p.6]], AP 0230UF 11/05 [[R1 p.6]], AP 0231NY 10/08 [[R1 p.6]], AP 0233UF 01/08 [[R1 p.6]], AP 0365UF 02/07 [[R1 p.6]], AP 0643 12/99 [[R1 p.6]], AP 0611 01/99 [[R1 p.6]], TLBX 1.2 [[R1 p.6]], GL 242 1.0 [[R1 p.6]], PNCAI 1.0 [[R1 p.6]], SROCNY 1.0 [[R1 p.6]], AP 0660 04/00 [[R1 p.6]], AP 0661 04/00 [[R1 p.6]], AP 0659 04/00 [[R1 p.6]], GL 212 01/87 [[R1 p.6]], BAI 1 1.2 [[R1 p.6]], AP 0853UF 04/23 [[R1 p.6]]."
+    }
+   ]
+  },
+  {
+   "number": "8",
+   "title": "Mid-term Changes on the Expiring Policy",
+   "page_break_before": false,
+   "summary": {
+    "headline": "No mid-term changes were found on the expiring policy.",
+    "bullets": [],
+    "mix": {
+     "reduced": 0,
+     "confirm": 0,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 0
+   },
+   "risk": {
+    "level": "low",
+    "statement": "Nothing in this section reduces the client's cover.",
+    "confidence": "high",
+    "confidence_reason": "No policy-change documents found in the expiring policy file."
+   },
+   "blocks": [
+    {
+     "kind": "note",
+     "text": "No mid-term changes or policy-change endorsements were found in the expiring policy documents; the expiring column is the policy as issued."
+    }
+   ]
+  },
+  {
+   "number": "9",
+   "title": "Contract Requirements and Broker Checklist",
+   "page_break_before": false,
+   "summary": {
+    "headline": "No changes found in contract requirements and broker checklist.",
+    "bullets": [
+     "Additional insured - ongoing operations: confirmed.",
+     "Primary & noncontributory: confirmed."
+    ],
+    "mix": {
+     "reduced": 0,
+     "confirm": 0,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 0
+   },
+   "risk": {
+    "level": "low",
+    "statement": "No changes noted.",
+    "confidence": "high",
+    "confidence_reason": "All contract requirements are consistent."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "compare",
+     "heading": null,
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Check",
+      "Expiring",
+      "Renewal",
+      "Change / Assessment"
+     ],
+     "rows": [
+      {
+       "label": "Contract requirement: Additional insured - ongoing operations",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Yes - BAI 1 [[E1 p.6]]",
+       "renewal": "Yes - BAI 1 [[R1 p.6]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Contract requirement: Additional insured - completed operations",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Not found",
+       "renewal": "Not found",
+       "change": "Not on either policy",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Contract requirement: Primary & noncontributory",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Yes - PNCAI [[E1 p.6]]",
+       "renewal": "Yes - PNCAI [[R1 p.6]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Contract requirement: Waiver of subrogation",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Not found",
+       "renewal": "Not found",
+       "change": "Not on either policy",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Contract requirement: Per project / per location aggregate",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "Not found",
+       "renewal": "Not found",
+       "change": "Not on either policy",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Claims-made continuity (retroactive date)",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "No retroactive date found",
+       "renewal": "No retroactive date found",
+       "change": "Not applicable (no claims-made retro date)",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Mid-term changes carried into renewal",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "None found",
+       "renewal": "—",
+       "change": "No mid-term changes found",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Carrier change",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "UTICA FIRST INSURANCE COMPANY [[E1 p.3]]",
+       "renewal": "UTICA FIRST INSURANCE COMPANY [[R1 p.3]]",
+       "change": "No change",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Endorsement wording that needs a read",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "None",
+       "renewal": "None",
+       "change": "Nothing flagged",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      },
+      {
+       "label": "Excess and umbrella tower",
+       "tag": null,
+       "sublabel": null,
+       "expiring": "—",
+       "renewal": "—",
+       "change": "Out of scope in comparison mode",
+       "badge": null,
+       "explain_label": "Why it matters",
+       "explain": null
+      }
+     ],
+     "footnote": null
+    }
+   ]
+  },
+  {
+   "number": "10",
+   "title": "Client Focus Areas",
+   "page_break_before": false,
+   "summary": {
+    "headline": "1 of 2 focus topics is affected by the renewal: communicable disease.",
+    "bullets": [
+     "No coverage for communicable disease transmission."
+    ],
+    "mix": {
+     "reduced": 0,
+     "confirm": 0,
+     "no_impact": 1,
+     "improved": 0
+    },
+    "items_compared": 1
+   },
+   "risk": {
+    "level": "low",
+    "statement": "Narrowed coverage for communicable diseases.",
+    "confidence": "high",
+    "confidence_reason": "Quotes clearly indicate changes."
+   },
+   "blocks": [
+    {
+     "kind": "focus",
+     "cards": [
+      {
+       "topic": "communicable disease",
+       "badge": {
+        "impact": "no_impact",
+        "severity": "low"
+       },
+       "mentions": "15 mentions in prior · 9 in renewal",
+       "related": "Related change: DNCANY — Important Notice Exclusion - Communicable Disease (removed at renewal).",
+       "quotes": [
+        {
+         "side": "expiring",
+         "text": "COMMUNICABLE DISEASE Your policy may not cover Communicable Disease.",
+         "ref": "E1 p.62"
+        },
+        {
+         "side": "expiring",
+         "text": "Previously, a communicable disease exclusion could not apply while the insured is engaged in the conduct of the named insured's business or…",
+         "ref": "E1 p.62"
+        },
+        {
+         "side": "renewal",
+         "text": "COMMUNICABLE DISEASE The Commercial Liability Coverages are amended as follows.",
+         "ref": "R1 p.28"
+        },
+        {
+         "side": "renewal",
+         "text": "We do not pay for bodily injury, property damage, personal injury, or advertising injury that arises out of the actual or alleged transmission of a…",
+         "ref": "R1 p.28"
+        }
+       ]
+      },
+      {
+       "topic": "additional insured",
+       "badge": null,
+       "mentions": "19 mentions in prior · 19 in renewal",
+       "related": null,
+       "quotes": [
+        {
+         "side": "expiring",
+         "text": "Any person or organization whom you are required to name as an additional insured on this policy under a written contract or written agreement.",
+         "ref": "E1 p.59"
+        },
+        {
+         "side": "renewal",
+         "text": "Any person or organization whom you are required to name as an additional insured on this policy under a written contract or written agreement.",
+         "ref": "R1 p.59"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "number": "11",
+   "title": "Items Pending Confirmation with the Carrier",
+   "page_break_before": false,
+   "summary": {
+    "headline": "1 item needs confirmation.",
+    "bullets": [
+     "CP 382 — NY Anti Arson Amendment: Pending confirmation with the carrier."
+    ],
+    "mix": {
+     "reduced": 0,
+     "confirm": 1,
+     "no_impact": 0,
+     "improved": 0
+    },
+    "items_compared": 1
+   },
+   "risk": {
+    "level": "medium",
+    "statement": "Pending confirmation with the carrier.",
+    "confidence": "high",
+    "confidence_reason": "Form fixed by rules."
+   },
+   "blocks": [
+    {
+     "kind": "table",
+     "variant": "pending",
+     "heading": null,
+     "heading_note": null,
+     "intro": null,
+     "columns": [
+      "Item",
+      "Expiring",
+      "Renewal",
+      "Next step"
+     ],
+     "rows": [
+      {
+       "label": "CP 382 — NY Anti Arson Amendment",
+       "tag": null,
+       "sublabel": "NY Anti-Arson Amendment removed, requiring anti-arson application within 45 days.",
+       "expiring": "CP 382 10/87 [[E1 p.6]]",
+       "renewal": "—",
+       "change": "Pending confirmation with the carrier",
+       "badge": {
+        "impact": "confirm",
+        "severity": "medium"
+       },
+       "explain_label": "Why it matters",
+       "explain": null
+      }
+     ],
+     "footnote": null
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "ref": "E1",
+   "document": "compare_policy_2Derek P Halstead ART3000742185 Ren 9-24-25 7.PDF",
+   "side": "Expiring",
+   "type": "Policy",
+   "pages": 79,
+   "how_read": "Digital text"
+  },
+  {
+   "ref": "R1",
+   "document": "compare_policy 1_Derek P Halstead ART3000742185 Ren 9-24-26 7.PDF",
+   "side": "Renewal policy",
+   "type": "Policy",
+   "pages": 77,
+   "how_read": "Digital text"
+  }
+ ],
+ "audit": {
+  "rejected_text": [
+   {
+    "field": "§7 DNCANY — Important Notice Exclusion - Communicable Disease — What it does",
+    "text": "Communicable Disease notice removed, replaced by AP 0853UF exclusion.",
+    "reason": "numbers not in the facts: 0853"
+   },
+   {
+    "field": "§Endorsements and Forms headline",
+    "text": "NY Anti-Arson Amendment and Communicable Disease Notice Removed",
+    "reason": "Title Case label instead of a sentence"
+   },
+   {
+    "field": "executive lead",
+    "text": "Confirm CP 382 NY Anti Arson Amendment.",
+    "reason": "Title Case label instead of a sentence"
+   },
+   {
+    "field": "§Contract Requirements and Broker Checklist headline",
+    "text": "Contract requirements",
+    "reason": "headline too short to be a sentence"
+   },
+   {
+    "field": "§Client Focus Areas bullet",
+    "text": "Excluding Communicable Disease coverage.",
+    "reason": "Title Case label instead of a sentence"
+   },
+   {
+    "field": "§Client Focus Areas headline",
+    "text": "Communicable Disease",
+    "reason": "headline too short to be a sentence"
+   },
+   {
+    "field": "§Client Focus Areas takeaway",
+    "text": "Review Communicable Disease exclusions.",
+    "reason": "Title Case label instead of a sentence"
+   },
+   {
+    "field": "§Items Pending Confirmation with the Carrier headline",
+    "text": "NY Anti Arson Amendment",
+    "reason": "Title Case label instead of a sentence"
+   },
+   {
+    "field": "§Items Pending Confirmation with the Carrier takeaway",
+    "text": "Confirm NY Anti Arson Amendment details.",
+    "reason": "Title Case label instead of a sentence"
+   }
+  ],
+  "guards": [
+   "section focus: risk medium -> low (floor low, ceiling low)"
+  ],
+  "expiring": "compare_policy_2Derek P Halstead ART3000742185 Ren 9-24-25 7.PDF",
+  "renewal": "compare_policy 1_Derek P Halstead ART3000742185 Ren 9-24-26 7.PDF",
+  "llm": true,
+  "model": "qwen2.5-7b-instruct",
+  "elapsed_s": 35.7,
+  "unmatched_paths": [
+   "form_schedules.contractors_equipment_schedule.scheduled_equipment"
+  ],
+  "topics": [
+   "communicable disease",
+   "additional insured"
+  ],
+  "llm_calls": [
+   {
+    "task": "classify_paths",
+    "ok": true,
+    "mode": "json_schema",
+    "seconds": 4.1,
+    "attempt": 1
+   },
+   {
+    "task": "section_policy",
+    "ok": true,
+    "mode": "json_schema",
+    "seconds": 5.5,
+    "attempt": 1
+   },
+   {
+    "task": "section_forms",
+    "ok": true,
+    "mode": "json_schema",
+    "seconds": 8.3,
+    "attempt": 1
+   },
+   {
+    "task": "synthesis",
+    "ok": true,
+    "mode": "json_schema",
+    "seconds": 15.3,
+    "attempt": 1
+   }
+  ],
+  "warnings": []
+ }
+}

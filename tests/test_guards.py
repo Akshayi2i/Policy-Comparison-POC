@@ -31,7 +31,7 @@ def test_true_statements_pass(an, text):
 
 
 def test_sentence_style():
-    assert check_text("NY Anti Arson Amendment", 20, kind="headline")[0] is None
+    assert check_text("Pending Carrier Confirmation Required", 20, kind="headline")[0] == "Pending carrier confirmation required."
     assert check_text("Pending Confirmation", 20, kind="bullet")[0] is None
     assert check_text("Dates moved forward one year", 20, kind="bullet")[0] == "Dates moved forward one year."
 
@@ -62,7 +62,10 @@ def test_form_numbers_are_allowed_numbers(an):
 def test_proper_nouns_are_not_title_case(an):
     gate = TextGate(an)
     assert gate.take("t", "Confirm CP 382 NY Anti Arson Amendment.", 16, kind="headline") is not None
-    assert gate.take("t", "Pending Carrier Confirmation Required", 16, kind="headline") is None
+    # Title Case is put into sentence case (not thrown away); real names keep their capitals
+    assert gate.take("t", "Pending Carrier Confirmation Required", 16, kind="headline") == "Pending carrier confirmation required."
+    from policy_compare.analysis.guards import _sentence_case
+    assert _sentence_case("Review The Exclusion Snow Removal Operations Form Carefully", ["Exclusion Snow Removal Operations"]) ==         "Review the Exclusion Snow Removal Operations form carefully"
 
 
 def test_reduction_claims_need_a_reduction(an):
@@ -93,3 +96,26 @@ def test_truncated_and_short_quotes(an):
 def test_edition_claims_need_an_edition_change(an):
     assert ClaimChecker(an).problem("NY Anti-Arson Amendment removed; confirm form edition.")
     assert ClaimChecker(an).problem("No form editions changed.") is None
+
+
+def test_talk_about_the_comparison_is_rejected(an):
+    gate = TextGate(an)
+    for t in ("Values directly from comparison report.", "All changes confirmed except one.", "Quotes match closely."):
+        assert gate.take("t", t, 20) is None
+    assert gate.take("t", "Values read from the digital declarations pages.", 20) is not None
+
+
+def test_no_change_claims_where_nothing_changed(an):
+    gate = TextGate(an)
+    assert gate.take("t", "Minor changes noted.", 20, no_change=True) is None
+    assert gate.take("t", "The focus topic is affected by the renewal.", 20, no_change=True) is None
+    assert gate.take("t", "No focus topic is affected by the renewal.", 20, no_change=True) is not None
+
+
+def test_claims_by_form_number(an):
+    c = ClaimChecker(an)
+    assert c.problem("AP 0853UF was removed at renewal.")             # still on the renewal
+    assert c.problem("AP 0853UF was added.")                          # on both policies
+    assert c.problem("CP 382 was removed and replaced by AP 0853UF.") is None
+    assert c.problem("SNEXNY excludes snow removal operations.") is None
+    assert c.problem("AP 0853UF was not removed.") is None

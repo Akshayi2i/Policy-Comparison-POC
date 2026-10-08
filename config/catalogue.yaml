@@ -101,13 +101,15 @@ expected:
   terms:
     - {label: "Coinsurance", any: ["**.*coinsurance*"], forms_any: ["coinsurance"]}
 
-# coverage parts (lines of business): a top-level container counts as present when it holds any real value
+# coverage parts (lines of business): every top-level section that holds a real value is a coverage part, except the
+# sections listed in non_coverage_sections. Labels below are optional display names; any other section is named from
+# its key ("tools_and_equipment_coverage_list" -> "Tools and equipment").
+non_coverage_sections: [schema, source_document, carrier, policy, named_insured, insured, agent, producer, premium,
+                        billing, forms_inventory, form_schedules, documents, extraction, declarations, locations,
+                        additional_interests, mortgagees, loss_payees, notes, metadata, policy_changes, endorsements]
 coverage_parts:
   general_liability: "General Liability"
   property: "Property"
-  package_endorsement: "Package endorsement"
-  tools_and_equipment_coverage_list: "Tools & Equipment"
-  optional_liability_coverage_list: "Optional Liability"
   commercial_property: "Commercial Property"
   commercial_auto: "Commercial Auto"
   umbrella: "Umbrella / Excess"

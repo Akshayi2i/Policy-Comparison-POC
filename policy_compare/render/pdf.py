@@ -63,8 +63,26 @@ def _env() -> Environment:
     return env
 
 
-def render_html(report: Report, edition: Edition = "colour") -> str:
-    return _env().get_template("report.html.j2").render(r=report, edition=edition, css=Markup(_css(edition)))
+def render_html(report: Report, edition: Edition = "colour", tight: bool = False) -> str:
+    """tight: the appendices keep together and may share a page (used when the reference breaks leave a page
+    nearly empty)."""
+    return _env().get_template("report.html.j2").render(r=report, edition=edition, css=Markup(_css(edition)), tight=tight)
+
+
+SPARSE = 0.3     # a page (not the last) whose content ends above 30% of its height is "nearly empty"
+
+
+def sparse_pages(pdf_path: Path) -> list[int]:
+    import pymupdf
+    with pymupdf.open(pdf_path) as doc:
+        out = []
+        for i, page in enumerate(doc):
+            if i == doc.page_count - 1:
+                continue
+            bottoms = [b[3] for b in page.get_text("blocks")]
+            if not bottoms or max(bottoms) < page.rect.height * SPARSE:
+                out.append(i + 1)
+        return out
 
 
 FONT_CACHE = STATIC / "fonts" / "_static"
@@ -128,25 +146,36 @@ def _stamp_running(pdf_path: Path, report: Report, edition: Edition) -> None:
 def render_pdf(report: Report, out_path: str | Path, edition: Edition = "colour", html_path: str | Path | None = None) -> Path:
     from playwright.sync_api import sync_playwright
 
-    page_html = render_html(report, edition)
-    if html_path:
-        Path(html_path).write_text(page_html, encoding="utf-8")
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as p:
         browser = p.chromium.launch()
         try:
-            page = browser.new_page()
-            page.set_content(page_html, wait_until="load")
-            page.evaluate("document.fonts.ready")
-            page.emulate_media(media="print")
-            page.pdf(
-                path=str(out_path),
-                format="Letter",
-                print_background=True,
-                margin={k: f"{v / 72:.4f}in" for k, v in PAGE_MARGINS_PT.items()},
-            )
+            page_html = _print(browser, render_html(report, edition), out_path)
+            if sparse_pages(out_path):                       # e.g. one table row alone on a page
+                tight = out_path.with_suffix(".tight.pdf")
+                tight_html = _print(browser, render_html(report, edition, tight=True), tight)
+                if not sparse_pages(tight):
+                    tight.replace(out_path)
+                    page_html = tight_html
+                else:
+                    tight.unlink(missing_ok=True)
         finally:
             browser.close()
+    if html_path:
+        Path(html_path).write_text(page_html, encoding="utf-8")
     _stamp_running(out_path, report, edition)
     return out_path
+
+
+def _print(browser, page_html: str, out_path: Path) -> str:
+    page = browser.new_page()
+    try:
+        page.set_content(page_html, wait_until="load")
+        page.evaluate("document.fonts.ready")
+        page.emulate_media(media="print")
+        page.pdf(path=str(out_path), format="Letter", print_background=True,
+                 margin={k: f"{v / 72:.4f}in" for k, v in PAGE_MARGINS_PT.items()})
+    finally:
+        page.close()
+    return page_html

@@ -116,10 +116,12 @@ def assess_slots(llm: LLMClient, an: "Analysis") -> dict[str, dict[str, SlotEvid
 
 
 def label_for(ev: Optional[SlotEvidence], forms_with_slot: list) -> str:
+    """'Yes - BAI 1' when the wording confirms it; '(by title)' when only the title was matched."""
     if ev and ev.status in ("met", "partial") and ev.form_number:
         return f"{'Yes' if ev.status == 'met' else 'Partly'} - {ev.form_number}"
     if forms_with_slot:
-        return "Yes - " + ", ".join(f.number for f in forms_with_slot)
+        nums = ", ".join(f.number for f in forms_with_slot)
+        return f"Partly - {nums} (by title)" if ev and ev.status == "not_found" else f"Yes - {nums} (by title)"
     return "Not found"
 
 
